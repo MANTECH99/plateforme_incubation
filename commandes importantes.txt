@@ -1,0 +1,28 @@
+php artisan tasks:check-deadlines
+php artisan alerts:send  
+
+public function handleCallback(Request $request)
+{
+    $authCode = $request->input('code');
+    $accessToken = $this->googleMeetService->authenticate($authCode);
+
+    // Récupérer l'ID de l'utilisateur authentifié
+    $userId = Auth::id(); // Récupère l'ID de l'utilisateur connecté
+
+    // Vérifiez si l'utilisateur est authentifié
+    if (!$userId) {
+        return redirect()->route('login')->with('error', 'Utilisateur non authentifié.');
+    }
+
+    // Trouver l'utilisateur dans la base de données
+    $user = User::findOrFail($userId);
+
+    // Stocker les tokens OAuth dans la base de données
+    $user->google_oauth_token = $accessToken['access_token'];
+    $user->google_refresh_token = $accessToken['refresh_token'] ?? null;
+    $user->save();
+
+    // Rediriger après la mise à jour
+    return redirect('/mentorship_sessions/create')->with('success', 'Compte Google connecté avec succès!');
+}
+     
