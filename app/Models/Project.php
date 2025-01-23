@@ -6,12 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    protected $casts = [
+        'documents' => 'array',
+    ];
 
     protected $fillable = [
         'title',
-        'description',
+        'description' ,
+        'objectives' ,
+        'budget' ,
+        'sector' ,
+        'status' ,
+        'start_date',
+        'partners' ,
+        'team_members',
+        'risks' ,
         'user_id',
         'coach_id',
+        'documents'
     ];
     public function user()
     {

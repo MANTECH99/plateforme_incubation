@@ -62,8 +62,8 @@ Route::middleware(['auth', 'role:porteur de projet'])->group(function () {
 
     Route::get('/porteur/dashboard', [DashboardController::class, 'dashboardPorteur'])->name('porteur de projet.dashboard');
 
-    
-    
+
+
 
 
     // Routes pour les projets du porteur
@@ -150,7 +150,7 @@ Route::get('/api/mentorship-sessions', [MentorshipSessionController::class, 'api
     ->name('mentorship_sessions.apiIndex')
     ->middleware('auth');
 
-    
+
 
 Route::get('/coach/{id}/profile', [CoachController::class, 'show'])->name('coach.profile');
 
@@ -266,6 +266,7 @@ Route::get('/modal/create-project', function () {
 })->name('modal.create_project');
 
 
+Route::get('/projects/{id}', [ProjectController::class, 'showProject'])->name('projects.show');
 
 
 

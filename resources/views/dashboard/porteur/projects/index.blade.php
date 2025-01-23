@@ -7,7 +7,7 @@
 
 <style>
     .horizontal-sidebar {
-    background-color: rgba(30, 125, 50, 0.1); 
+    background-color: rgba(30, 125, 50, 0.1);
     border-bottom: 1px solid #ddd;
     padding: 10px 0;
 }
@@ -73,10 +73,10 @@
     </div><br>
 
 
-    <iframe 
-    id="modalFrame" 
-    src="{{ route('modal.create_project') }}" 
-    style="width: 100%; border: none; height : 510px; display: none;" 
+    <iframe
+    id="modalFrame"
+    src="{{ route('modal.create_project') }}"
+    style="width: 100%; border: none; height : 510px; display: none;"
     scrolling="no">
 </iframe>
 
@@ -122,6 +122,7 @@
                                 <th>Coach</th>
                                 <th>Tâches associées</th>
                                 <th>Action</th>
+                                <th>afficher le projet</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -144,11 +145,16 @@
                         </button>
                     </form>
                 </td>
+                                    <td>
+                                            <a href="{{ route('projects.show', $project->id) }}" class="btn btn-sm" style="background-color: #27ae60     ; color: white;">Voir le Projet</a>
+                                        </a>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
                                     <td colspan="4" class="text-center">Aucun projet disponible.</td>
                                 </tr>
+
                             @endforelse
                         </tbody>
                     </table>
