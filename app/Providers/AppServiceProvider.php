@@ -43,7 +43,8 @@ class AppServiceProvider extends ServiceProvider
                     'unreadMessagesCount',
                     'recentMessages',
                     'unreadNotificationsCount',
-                    'recentNotifications'
+                    'recentNotifications',
+                    'user'
                 ));
             }
         });

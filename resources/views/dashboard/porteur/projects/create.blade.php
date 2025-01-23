@@ -4,14 +4,6 @@
 
 @section('content')
 <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb bg-light px-3 py-2 rounded">
-                <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Créer un Nouveau Projet</a></li>
-            </ol>
-        </div>
-    </div>
 
     <div class="container-fluid p-0 w-100" id="container-wrapper">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -21,8 +13,8 @@
         <div class="row">
             <div class="col-lg-8 mb-4">
                 <div class="card shadow">
-                    <div class="card-header py-3" style="background-color: #27ae60; color: white;">
-                        <h6 class="m-0 font-weight-bold">Détails du Projet</h6>
+                    <div class="card-header py-3" style="background-color: #4CAF50     ; color: white;">
+                        <h6 class="m-0 font-weight-bold" style="color: white;">Détails du Projet</h6>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ auth()->user()->role->name === 'coach' ? route('coach.projects.store') : route('porteur.projects.store') }}">
@@ -38,7 +30,7 @@
                             </div>
 
                             <div class="text-center">
-                                <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-check"></i> Créer le Projet</button>
+                                <button type="submit" class="btn btn-success btn-md"><i class="fa fa-check"></i> Créer le Projet</button>
                             </div>
                         </form>
                     </div>

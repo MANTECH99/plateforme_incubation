@@ -14,8 +14,9 @@ class User extends Authenticatable
     use Notifiable;
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_id'); // La clé étrangère est 'role_id'
     }
+    
 
 // Dans le modèle User
     public function projectsCoached()
@@ -52,7 +53,25 @@ public function receivedMessages(): HasMany
         'email',
         'password',
         'role_id',
-        'bio', 'expertise', 'experience' // Ajoute ceci pour que role_id soit pris en compte
+        'bio',  
+        'fonction',
+        'genre',
+        'biographie',
+        'telephone',
+        'ville',
+        'date_naissance',
+        'instagram',
+        'facebook',
+        'linkedin',
+        'twitter',
+        'startup_nom',
+        'startup_slogan',
+        'expertise',
+        'startup_adresse',
+        'startup_secteur',
+        'experience',
+        'pitch',
+        'profile_picture', // Pour stocker le chemin de la photo// Ajoute ceci pour que role_id soit pris en compte
     ];
 
     /**

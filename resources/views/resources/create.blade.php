@@ -4,14 +4,6 @@
 
 @section('content')
 <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb bg-light px-3 py-2 rounded">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Ajouter une Ressource</a></li>
-            </ol>
-        </div>
-    </div>
 
     <div class="container-fluid p-0 w-100" id="container-wrapper">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -22,8 +14,8 @@
             <div class="col-lg-8 mb-4">
                 <!-- Formulaire d'ajout de ressource -->
                 <div class="card shadow">
-                    <div class="card-header" style="background-color: #27ae60; color: white;">
-                        <h6 class="m-0 font-weight-bold">Formulaire d'Ajout de Ressource</h6>
+                    <div class="card-header" style="background-color: #4CAF50     ; color: white;">
+                        <h6 class="m-0 font-weight-bold" style=" color: white;">Formulaire d'Ajout de Ressource</h6>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data">

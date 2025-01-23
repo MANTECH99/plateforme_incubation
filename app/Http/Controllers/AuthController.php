@@ -40,7 +40,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         // Redirection selon le rôle
-        return $this->redirectBasedOnRole($user);
+        return redirect()->route('auth');
     }
 
     // Méthode pour gérer la connexion

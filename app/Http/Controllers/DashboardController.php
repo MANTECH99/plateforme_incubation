@@ -90,6 +90,9 @@ class DashboardController extends Controller
         $totalCoachs = User::whereHas('role', function ($query) {
             $query->where('name', 'coach');
         })->count();
+
+            // Calcule le nombre total de projets
+    $totalProjects = Project::count();
     
         // Récupérer les porteurs de projet pour la sélection
         $porteurs = User::whereHas('role', function ($query) {
@@ -113,7 +116,7 @@ class DashboardController extends Controller
         }
     
         // Renvoyer les variables à la vue admin dashboard
-        return view('dashboard.admin', compact('totalAdmins', 'totalPorteurs', 'totalCoachs', 'porteurs', 'selectedPorteur', 'selectedPorteurProgress'));
+        return view('dashboard.admin', compact('totalAdmins', 'totalPorteurs', 'totalCoachs', 'porteurs', 'selectedPorteur', 'selectedPorteurProgress','totalProjects'));
     }
     
 

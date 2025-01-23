@@ -5,10 +5,49 @@
 
 @section('content')
 
+<style>
+.custom-event {
+    font-weight: bold !important; /* Texte en gras */
+    color: #27ae60 !important; /* Texte en noir */
+}
 
+.fc-prev-button, .fc-next-button {
+    color: black !important; /* Change la couleur des flèches */
+    background-color: transparent; /* Supprime le fond */
+    border: none; /* Supprime les bordures */
+}
+
+.fc-prev-button:hover, .fc-next-button:hover {
+    color: #27ae60 !important; /* Couleur au survol */
+}
+
+
+/* Styles généraux pour les boutons */
+.fc-button {
+    color: black !important; /* Texte noir */
+    background-color: transparent; /* Fond transparent */
+    border: 1px solid #27ae60; /* Bordure verte */
+}
+
+/* Bouton actif (sélectionné) */
+.fc-button.fc-button-active {
+    color: white !important; /* Texte blanc */
+    background-color: #27ae60 !important; /* Fond vert */
+    border-color: #27ae60 !important; /* Bordure verte */
+}
+
+/* Boutons au survol */
+.fc-button:hover {
+    color: white !important; /* Texte blanc */
+    background-color: #2ecc71 !important; /* Fond vert clair */
+    border-color: #2ecc71 !important; /* Bordure vert clair */
+}
+
+
+</style>
 <!-- Progression Globale du Projet -->
 <div class="card mt-4">
-    <div class="card-header bg-primary text-white">
+    <div  class="btn btn-lg" style="background-color: #27ae60     ; color: white;">
         Progression Globale des Projets
     </div>
     <div class="card-body">
@@ -22,9 +61,9 @@
   <div class="col-lg-6 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-      <div class="card-header bg-primary text-white">
+      <div class="card-header  text-white" class="btn btn-lg" style="background-color: #27ae60     ; color: white;">
         Statistiques globales des Taches
-    </div>
+    </div><br>
         <canvas id="barChart" width="5" height="2"></canvas>
 
       </div>
@@ -34,7 +73,7 @@
   <div class="col-lg-6 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header text-white" class="btn btn-lg" style="background-color: #27ae60     ; color: white;">
         Calendrier des Séances de Mentorat
     </div>
         </div>

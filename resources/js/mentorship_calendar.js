@@ -17,9 +17,12 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             locale: 'fr',
             events: '/api/mentorship-sessions', // Charge les séances depuis l'API
+            eventClassNames: function () {
+                return ['custom-event']; // Ajoute la classe CSS
+            },
             eventClick: function (info) {
- // Empêcher l'alerte d'afficher
- window.location.href = info.event.url; // Redirige directement vers le lien de la réunion
+                // Redirige directement vers le lien de la réunion
+                window.location.href = info.event.url;
             }
         });
 

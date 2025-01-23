@@ -21,6 +21,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\RequestController;
+use App\Http\Controllers\WorkspaceController;
+use App\Http\Controllers\CoachWorkspaceController;
 
 
 
@@ -67,6 +70,9 @@ Route::middleware(['auth', 'role:porteur de projet'])->group(function () {
     Route::get('/porteur/projects', [ProjectController::class, 'porteurIndex'])->name('porteur.projects.index');
     Route::get('/porteur/projects/create', [ProjectController::class, 'create'])->name('porteur.projects.create');
     Route::post('/porteur/projects', [ProjectController::class, 'store'])->name('porteur.projects.store');
+    Route::delete('/porteur/projects/{project}', [ProjectController::class, 'destroy'])->name('porteur.projects.destroy');
+    Route::get('/workspace', [WorkspaceController::class, 'index'])->name('porteur.workspace');
+
 
     // Routes pour les resources du porteur
     Route::get('/porteur/resources', [ResourceController::class, 'index'])->name('porteur.resources.index');
@@ -84,6 +90,7 @@ Route::middleware(['auth', 'role:coach'])->group(function () {
     Route::post('/coach/projects/{project}/accompagner', [ProjectController::class, 'accompagner'])->name('coach.projects.accompagner');
     Route::get('/coach/projects/create', [ProjectController::class, 'create'])->name('coach.projects.create');
     Route::post('/coach/projects', [ProjectController::class, 'store'])->name('coach.projects.store');
+    Route::get('/coach/workspace', [CoachWorkspaceController::class, 'index'])->name('coach.workspace');
 
     // Routes pour la gestion des tâches du coach
     Route::post('/coach/projects/{project}/tasks', [TaskController::class, 'store'])->name('coach.tasks.store');
@@ -106,6 +113,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
     Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::patch('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
 });
 
 
@@ -243,6 +252,21 @@ Route::middleware('web')->group(function () {
     Route::get('/google/redirect', [GoogleAuthController::class, 'redirect'])->name('google.redirect');
     Route::get('/callback/google', [GoogleAuthController::class, 'handleCallback'])->name('google.callback');
 });
+
+
+Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.editt');
+Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.updatee');
+Route::get('/profile/view', [UserController::class, 'showProfile'])->name('profile.view');
+
+Route::post('/requests/relation', [RequestController::class, 'sendRelationRequest'])->name('requests.relation');
+
+
+Route::get('/modal/create-project', function () {
+    return view('modals.create_project_modal');
+})->name('modal.create_project');
+
+
+
 
 
 

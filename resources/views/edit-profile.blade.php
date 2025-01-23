@@ -5,14 +5,6 @@
 
 @section('content')
 <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Modifier le Profil</a></li>
-            </ol>
-        </div>
-    </div>
     <!-- row -->
     <!-- Container Fluid-->
     <div class="container-fluid p-0 w-100" id="container-wrapper" style="margin: 0; padding: 0; width: 100%;">

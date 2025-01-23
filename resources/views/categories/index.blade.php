@@ -50,13 +50,18 @@
     }
 </style>
 @if(auth()->user()->role->name == 'admin')
-<div class="mb-3">
-<a href="{{ route('categories.create') }}" class="btn btn-primary">Ajouter une Catégorie</a>
-<a href="{{ route('videos.create') }}" class="btn btn-primary">Ajouter une Vidéo</a>
+<div class="d-flex align-items-center">
+<a href="{{ route('categories.create') }}" class="btn btn-md" style="background-color: #27ae60     ; color: white;">Ajouter une Catégorie</a>&nbsp;&nbsp;
+<a href="{{ route('videos.create') }}" class="btn btn-md" style="background-color: #27ae60     ; color: white;">Ajouter une Vidéo</a>&nbsp;&nbsp;
+
+
+<a href="{{ route('videos.index') }}" class="btn btn-md" style="background-color: #27ae60     ; color: white;">Voir toutes les Vidéos</a>
 </div>
 @endif
-<a href="{{ route('videos.index') }}" class="btn btn-secondary">Voir toutes les Vidéos</a>
-<div class="container" style="width: 100%; margin: 0; padding: 0;">
+@if(auth()->user()->role->name == 'porteur de projet' || auth()->user()->role->name == 'coach')
+<a href="{{ route('videos.index') }}" class="btn btn-md" style="background-color: #27ae60     ; color: white;">Voir toutes les Vidéos</a>
+@endif
+<div class="container" style="width: 100%; margin: 0; padding: 0;"><br><br>
     <h1>Playlists</h1>
     <div class="row g-4">
         @foreach ($categories as $category)

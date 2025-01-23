@@ -42,11 +42,11 @@
         <div class="col-lg-3 col-sm-6">
                         <div class="card gradient-4">
                             <div class="card-body">
-                                <h3 class="card-title text-white">A implémenter</h3>
+                                <h3 class="card-title text-white">Nombre de projets</h3>
                                 <div class="d-inline-block">
-                                    <h2 class="text-white">?</h2>
+                                    <h2 class="text-white">{{ $totalProjects }}</h2>
                                 </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-book"></i></span>
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
     <!-- Graphique de la progression des projets du porteur sélectionné -->
     @if ($selectedPorteurProgress && $selectedPorteurProgress->isNotEmpty())
     <div class="card mt-4">
-        <div class="card-header bg-primary text-white">
+        <div class="btn btn-lg" style="background-color: #27ae60     ; color: white;">
             Progression des Projets de {{ $selectedPorteur->name }}
         </div>
         <div class="card-body" >

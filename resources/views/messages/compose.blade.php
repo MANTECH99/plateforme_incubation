@@ -5,14 +5,6 @@
 
 @section('content')
 <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
-            </ol>
-        </div>
-    </div>
     <!-- Container Fluid -->
     <div class="container-fluid">
         <div class="row">
@@ -20,11 +12,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="email-left-box">
-                            <a href="{{ route('messages.compose') }}" class="btn btn-primary btn-block">Compose</a>
+                            <a href="{{ route('messages.compose') }}" class="btn btn-success btn-block" style="background-color: #27ae60     ; color: white;">Compose</a>
                             <div class="mail-list mt-4">
-                                <a href="{{ route('messages.inbox') }}" class="list-group-item border-0 text-primary p-r-0">
+                                <a href="{{ route('messages.inbox') }}" class="list-group-item border-0 text-success p-r-0">
                                     <i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>Boîte de réception</b>
-                                    <span class="badge badge-primary badge-sm float-right m-t-5">{{ $unreadCount ?? 0 }}</span>
+                                    <span class="badge badge-success badge-sm float-right m-t-5">{{ $unreadCount ?? 0 }}</span>
                                 </a>
                                 <a href="{{ route('messages.sent') }}" class="list-group-item border-0 p-r-0">
                                     <i class="fa fa-paper-plane font-18 align-middle mr-2"></i> Envoyés
@@ -55,8 +47,8 @@
                                         <input class="l-border-1" name="attachments[]" type="file" multiple="multiple">
                                     </div>
                                     <div class="text-left m-t-15">
-                                        <button type="submit" class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10"><i class="fa fa-paper-plane m-r-5"></i> Send</button>
-                                        <a href="{{ route('messages.inbox') }}" class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20"><i class="ti-close m-r-5 f-s-12"></i> Discard</a>
+                                        <button type="submit" class="btn btn-success m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10"><i class="fa fa-paper-plane m-r-5"></i> Send</button>
+                                        <a href="{{ route('messages.inbox') }}" class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20"><i class="ti-close m-r-5 f-s-12"></i> Annuler</a>
                                     </div>
                                 </form>
                             </div>

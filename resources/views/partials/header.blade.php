@@ -1,155 +1,183 @@
 <style>
-/* Supprime le soulignement des liens dans le header */
-.header a {
+/* Styles personnalisés pour le header */
+.navbar-brand img {
+    max-height: 50px;
+}
+
+.nav-item .count {
+    background-color: #f44336;
+    border-radius: 50%;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    position: absolute;
+    top: 10px;
+    right: 5px;
+}
+
+.navbar-menu-wrapper .input-group .form-control {
+    border: 2px solid #4CAF50; /* Bordure verte */
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+.navbar-menu-wrapper .input-group .form-control:focus {
+    outline: none;
+    box-shadow: 0 0 5px #4CAF50; /* Effet de surbrillance vert */
+}
+
+.navbar .dropdown-menu {
+    min-width: 250px;
+}
+
+.dropdown-header {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.notification-unread {
+    font-weight: bold;
+}
+
+
+/* Animation pour le texte défilant */
+.marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%; /* Ajuster la largeur selon vos besoins */
+    display: inline-block;
+    position: relative;
+    margin-left: 20px;
+}
+
+.marquee {
+    display: inline-block;
+    animation: marquee 20s linear infinite; /* Ajuster la durée de l'animation */
+    font-weight: bold; /* Texte en gras */
+    color: #27ae60;
+    font-size: 20px; /* Taille du texte */
+    transform: translateX(50%); /* Commence au milieu */
+    animation-delay: 0s; /* Pas de délai avant le démarrage */
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(70%); /* Position initiale : au milieu */
+    }
+    100% {
+        transform: translateX(-100%); /* Texte défile vers la gauche */
+    }
+}   
+
+/* Logo container */
+.logoss {
+    text-align: center;
+}
+
+.logoss img {
+    width: 100px; /* Ajuste la taille du logo */
+    height: auto;
+    margin-right: 0px;
+}
+
+.dropdown-menu a {
     text-decoration: none !important; /* Supprime le soulignement */
-    color: inherit; /* Conserve la couleur actuelle des liens */
+    color: inherit; /* Garde la couleur par défaut */
 }
 
-.header a:hover {
-    text-decoration: none; /* Aucun soulignement au survol */
-    color: #007bff; /* Couleur personnalisée au survol */
+.dropdown-menu a:hover {
+    color: #27ae60; /* Couleur verte au survol */
 }
 
-/* Si vous voulez une couleur spécifique pour les liens actifs */
-.header a:active {
-    color: #0056b3; /* Ajustez selon votre design */
+.dropdown-menu .mark-as-read {
+    font-weight: normal; /* Texte normal */
 }
+
 </style>
 
-<div class="nav-header" style="display: flex; justify-content: center; align-items: center; height: 100px; background-color: white;">
-    <div class="brand-logo" style="display: flex; flex-direction: column; align-items: center;">
-        <b class="logo-abbr"><img src="{{ asset('images/logo.png') }}" alt="Logo abrégé" style="max-height: 50px; margin-bottom: 10px;"> </b>
-        <span class="logo-compact"><img src="{{ asset('images/logo-compact.png') }}" alt="Logo compact" style="max-height: 30px; margin-bottom: 5px;"></span>
-        <span class="brand-title">
-            <img src="{{ asset('images/logo-text.png') }}" alt="Logo texte" style="max-height: 40px;">
-        </span>
+<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+    <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo mr-5" href="{{ route('dashboard') }}">
+            <img src="{{ asset('images/logo-text.png') }}" class="mr-2" alt="logo" />
+        </a>
+        <a class="navbar-brand brand-logo-mini" href="{{ route('dashboard') }}">
+            <img src="{{ asset('images/logo-text.png') }}" alt="logo" />
+        </a>
     </div>
-</div>
-
-
-
-<div class="header">    
-    <div class="header-content clearfix">
-        <div class="nav-control">
-            <div class="hamburger">
-                <span class="toggle-icon"><i class="icon-menu"></i></span>
-            </div>
+    <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="icon-menu"></span>
+        </button>
+        <!-- Logo à la place du champ de recherche -->
+        <div class="logoss">
+        <img src="{{ asset('images/uasz.png') }}" alt="Logo">
         </div>
-        <div class="header-left">
-            <div class="input-group icons">
-                <div class="input-group-prepend">
-                    <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+        <div class="marquee-container">
+            <span class="marquee">Bienvenue sur notre plateforme d'incubation. L’Université Assane Seck de Ziguinchor (UASZ) s’est dotée d’un incubateur pour soutenir les projets innovants des étudiants et des entrepreneurs locaux.</span>
+        </div>
+        <ul class="navbar-nav navbar-nav-right">
+            <!-- Notifications Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                    <i class="icon-bell mx-0"></i>
+                    <span id="notification-count" class="badge badge-pill badge-success">{{ $unreadNotificationsCount }}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                <span class="font-weight-bold">Nouvelles Notifications</span> <span class="badge badge-pill badge-success">{{ $unreadNotificationsCount }}</span>
+                    <div class="dropdown-content-body">
+                        <ul>
+                            @foreach(auth()->user()->unreadNotifications->take(5) as $notification)
+                                <li>
+                                    <a href="{{ $notification->data['url'] ?? '#' }}" class="mark-as-read" data-id="{{ $notification->id }}">
+                                        <strong>{{ $notification->data['title'] }}</strong>
+                                        <span>{{ $notification->data['message'] }}</span>
+                                    </a><br>
+                                    <small>{{ $notification->created_at->diffForHumans() }}</small>
+                                </li>
+                            @endforeach
+                            @if(auth()->user()->unreadNotifications->isEmpty())
+                                <li class="text-center">Aucune notification non lue</li>
+                            @endif
+                            <li class="text-center mt-2">
+                            <a href="{{ route('notifications.index') }}" class="badge badge-pill badge-success d-inline-block text-black text-center" style="text-decoration: none; width: 300px; height: 25px; font-weight: bold; display: flex; align-items: center; justify-content: center;">
+    Voir toutes les notifications
+</a>
+
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <input type="search" class="form-control" placeholder="Search Dashboard" aria-label="Search Dashboard">
-            </div>
-        </div>
-        <div class="header-right">
-            <ul class="clearfix">
-                <!-- Messages Dropdown -->
-                <li class="icons dropdown">
-                    <a href="javascript:void(0)" data-toggle="dropdown">
-                        <i class="mdi mdi-email-outline"></i>
+            </li>
+
+            <!-- User Profile Dropdown -->
+            <li class="nav-item nav-profile dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                <img id="image" src="{{ asset('storage/' . $user->profile_picture) }}" alt="Picture">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                <a class="dropdown-item" href="{{ route('profile.editt') }}">
+                    <i class="icon-user"></i>Remplir mon profil
+                    </a>
+                    <a class="dropdown-item" href="{{ url('/profile') }}">
+                    <i class="ti-settings text-primary"></i>Paramétres
+                    </a>
+                    <a class="dropdown-item" href="{{ route('messages.inbox') }}">
+                        <i class="icon-envelope-open"></i> Messagerie
                         <span class="badge badge-pill gradient-1">{{ $unreadMessagesCount }}</span>
                     </a>
-                    <div class="drop-down animated fadeIn dropdown-menu">
-                        <div class="dropdown-content-heading d-flex justify-content-between">
-                            <span class="">{{ $unreadMessagesCount }} New Messages</span>  
-                            <a href="{{ route('messages.inbox') }}" class="d-inline-block">
-                                <span class="badge badge-pill gradient-1">{{ $unreadMessagesCount }}</span>
-                            </a>
-                        </div>
-                        <div class="dropdown-content-body">
-                            <ul>
-                                @foreach($recentMessages as $message)
-                                    <li class="notification-unread">
-                                        <a href="{{ route('messages.read', $message->id) }}">
-                                            <img class="float-left mr-3 avatar-img" src="{{ asset('images/avatar/1.jpg') }}" alt="">
-                                            <div class="notification-content">
-                                                <div class="notification-heading">{{ $message->sender->name }}</div>
-                                                <div class="notification-timestamp">{{ $message->created_at->diffForHumans() }}</div>
-                                                <div class="notification-text">{{ \Illuminate\Support\Str::limit($message->content, 50) }}</div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-<!-- Notifications Dropdown -->
-<li class="icons dropdown">
-    <a href="javascript:void(0)" data-toggle="dropdown">
-        <i class="mdi mdi-bell-outline"></i>
-        <span id="notification-count" class="badge badge-pill gradient-2">{{ $unreadNotificationsCount }}</span>
-    </a>
-    <div class="drop-down animated fadeIn dropdown-menu dropdown-notfication">
-    <div class="dropdown-content-heading d-flex justify-content-between align-items-center">
-    <span class="font-weight-bold">Nouvelles Notifications</span>
-    <a href="{{ route('notifications.index') }}" class="badge badge-pill gradient-2 d-inline-block text-white text-center" style="text-decoration: none; width: 80px;">
-        <span">Voir tout</span>
-    </a>
-    <span class="badge badge-pill gradient-2">{{ $unreadNotificationsCount }}</span>
-</div>
-
-        <div class="dropdown-content-body">
-    <ul>
-        @foreach(auth()->user()->unreadNotifications->take(5) as $notification)
-            <li>
-                <a href="{{ $notification->data['url'] ?? '#' }}" class="mark-as-read" data-id="{{ $notification->id }}">
-                    <strong>{{ $notification->data['title'] }}</strong>
-                    <span>{{ $notification->data['message'] }}</span>
-                </a>
-                <small>{{ $notification->created_at->diffForHumans() }}</small>
+                    <a class="dropdown-item" href="#">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-link text-danger p-0" style="text-decoration: none;">
+                                <i class="ti-power-off text-primary"></i> Se déconnecter
+                            </button>
+                        </form>
+                    </a>
+                </div>
             </li>
-        @endforeach
-        @if(auth()->user()->unreadNotifications->isEmpty())
-            <li class="text-center">Aucune notification non lue</li>
-        @endif
-                <!-- Afficher un lien pour voir toutes les notifications -->
-                <li class="text-center mt-2">
-            <a href="{{ route('notifications.index') }}"  class="badge badge-pill gradient-2 d-inline-block text-white text-center" style="text-decoration: none; width: 280px; height: 25px;">
-                Voir toutes les notifications
-            </a>
-        </li>
-    </ul>
-</div>
-
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="icon-menu"></span>
+        </button>
     </div>
-</li>
-
-
-                <!-- User Profile Dropdown -->
-                <li class="icons dropdown">
-                    <div class="user-img c-pointer position-relative" data-toggle="dropdown">
-                        <span class="activity active"></span>
-                        <img src="{{ asset('images/user/1.png') }}" height="40" width="40" alt="">
-                    </div>
-                    <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
-                        <div class="dropdown-content-body">
-                            <ul>
-                                <li>
-                                    <a href="{{ url('/profile') }}"><i class="icon-user"></i> <span>Mon profil</span></a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('messages.inbox') }}">
-                                        <i class="icon-envelope-open"></i> <span>Messagerie</span> <div class="badge gradient-3 badge-pill gradient-1">{{ $unreadMessagesCount }}</div>
-                                    </a>
-                                </li>
-                                <hr class="my-2">
-                                <li>
-                                    <!-- Formulaire de déconnexion -->
-                                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-link text-danger" style="padding: 0; text-decoration: none;">
-                                            <i class="icon-key"></i> <span>Se déconnecter</span>
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+</nav>

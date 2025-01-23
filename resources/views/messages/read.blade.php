@@ -4,14 +4,6 @@
 
 @section('content')
 <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
-            </ol>
-        </div>
-    </div>
     <!-- Container Fluid -->
     <div class="container-fluid">
         <div class="row">
@@ -19,11 +11,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="email-left-box">
-                            <a href="{{ route('messages.compose') }}" class="btn btn-primary btn-block">Compose</a>
+                            <a href="{{ route('messages.compose') }}" class="btn btn-success btn-block" style="background-color: #27ae60     ; color: white;">Compose</a>
                             <div class="mail-list mt-4">
-                                <a href="{{ route('messages.inbox') }}" class="list-group-item border-0 text-primary p-r-0">
+                                <a href="{{ route('messages.inbox') }}" class="list-group-item border-0 text-success p-r-0">
                                     <i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>Boîte de réception</b>
-                                    <span class="badge badge-primary badge-sm float-right m-t-5">{{ $unreadCount ?? 0 }}</span>
+                                    <span class="badge badge-sucess badge-sm float-right m-t-5">{{ $unreadCount ?? 0 }}</span>
                                 </a>
                                 <a href="{{ route('messages.sent') }}" class="list-group-item border-0 p-r-0">
                                     <i class="fa fa-paper-plane font-18 align-middle mr-2"></i> Envoyés
@@ -41,7 +33,7 @@
                                 <hr>
                                 <div class="media mb-4 mt-1">
                                     <div class="media-body"><span class="float-right">{{ $message->created_at->format('H:i') }}</span>
-                                        <h4 class="m-0 text-primary">Contenu du message : <br><br> {{ \Illuminate\Support\Str::limit($message->content, 50) }}</h4>
+                                        <h4 class="m-0 text-secondary">Contenu du message : <br><br> {{ \Illuminate\Support\Str::limit($message->content, 50) }}</h4>
                                     </div>
                                 </div>
                                 <hr>

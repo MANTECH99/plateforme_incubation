@@ -38,6 +38,15 @@ class Project extends Model
     return $this->hasMany(MentorshipSession::class);
 }
 
+protected static function boot()
+{
+    parent::boot();
+
+    static::deleting(function ($project) {
+        // Supprimer toutes les tâches associées
+        $project->tasks()->delete();
+    });
+}
 
 
 }

@@ -4,16 +4,62 @@
 
 @section('content')
 
-<div class="content-body" style="width: 100%; margin: 0; padding: 0;">
+<style>
+    .horizontal-sidebar {
+    background-color: rgba(30, 125, 50, 0.1); 
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
 
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb bg-light px-3 py-2 rounded">
-                <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Tâches pour le projet : {{ $project->title }}</a></li>
-            </ol>
-        </div>
+.horizontal-sidebar .nav-tabs {
+    border-bottom: none;
+    justify-content: center;
+}
+
+.horizontal-sidebar .nav-tabs .nav-link {
+    color: #333;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 0;
+    transition: all 0.3s ease;
+}
+
+.horizontal-sidebar .nav-tabs .nav-link.active {
+    background-color: #27ae60;
+    color: #fff;
+    font-weight: bold;
+}
+
+</style>
+<div class="container">
+    <div class="horizontal-sidebar">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('porteur.projects.index') ? 'active' : '' }}" href="{{ route('porteur.projects.index') }}">
+                    Mes projets
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('mentorship_sessions.index') ? 'active' : '' }}" href="{{ route('mentorship_sessions.index') }}">
+                    Séances de mentorat
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('porteur.coaches') ? 'active' : '' }}" href="{{ route('porteur.coaches') }}">
+                    Liste des coachs
+                </a>
+            </li>
+        </ul>
     </div>
+    <div class="workspace-content mt-4">
+        @yield('workspace-content')
+    </div>
+</div>
+
+
+
+
+<div class="content-body" style="width: 100%; margin: 0; padding: 0;">
 
     <div class="container-fluid p-0 w-100" id="container-wrapper">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -26,7 +72,7 @@
                     <div class="card shadow">
                         <div class="table-responsive">
                             <table class="table align-items-center table-bordered">
-                                <thead  style="background-color: #27ae60; color: white;">
+                                <thead  style="background-color: #2ecc71; color: white;">
                                     <tr>
                                         <th style="border: 1px solid #2ecc71;">Titre</th>
                                         <th style="border: 1px solid #2ecc71;">Description</th>

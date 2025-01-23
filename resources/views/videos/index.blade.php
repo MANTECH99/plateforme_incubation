@@ -7,7 +7,7 @@
     <!-- Conteneur des vidéos -->
     <div class="row g-3">
         @foreach ($videos as $video)
-            <div class="col-md-3 col-sm-6">
+            <div class="col-md-4 col-sm-6">
                 <div class="card h-100">
                     <!-- Miniature de la vidéo -->
                     <a href="{{ route('videos.show', $video->id) }}">

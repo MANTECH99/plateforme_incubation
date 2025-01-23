@@ -17,8 +17,15 @@ class SharedDocumentController extends Controller
         $sentDocuments = SharedDocument::with('sharedWith')
             ->where('uploaded_by', auth()->id())
             ->get();
+            $coaches = User::whereHas('role', function ($query) {
+                $query->where('name', 'coach');
+            })->get();
+        
+            $porteurs = User::whereHas('role', function ($query) {
+                $query->where('name', 'porteur de projet');
+            })->get();
     
-        return view('documents.index', compact('receivedDocuments', 'sentDocuments'));
+        return view('documents.index', compact('receivedDocuments', 'sentDocuments','coaches', 'porteurs'));
     }
     
 
@@ -77,8 +84,8 @@ class SharedDocumentController extends Controller
         ) {
             abort(403, 'Accès interdit.');
         }
+        return response()->download(storage_path('app/public/' . $document->file_path));
 
-        return response()->download(storage_path("app/private/{$document->file_path}"));
     }
 
     public function destroy($id)

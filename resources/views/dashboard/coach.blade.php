@@ -3,9 +3,48 @@
 @section('title', 'Dashboard - Plateforme incubation')
 
 @section('content')
+<style>
+.custom-event {
+    font-weight: bold !important; /* Texte en gras */
+    color: #27ae60 !important; /* Texte en noir */
+}
 
+.fc-prev-button, .fc-next-button {
+    color: black !important; /* Change la couleur des flèches */
+    background-color: transparent; /* Supprime le fond */
+    border: none; /* Supprime les bordures */
+}
+
+.fc-prev-button:hover, .fc-next-button:hover {
+    color: #27ae60 !important; /* Couleur au survol */
+}
+
+
+/* Styles généraux pour les boutons */
+.fc-button {
+    color: black !important; /* Texte noir */
+    background-color: transparent; /* Fond transparent */
+    border: 1px solid #27ae60; /* Bordure verte */
+}
+
+/* Bouton actif (sélectionné) */
+.fc-button.fc-button-active {
+    color: white !important; /* Texte blanc */
+    background-color: #27ae60 !important; /* Fond vert */
+    border-color: #27ae60 !important; /* Bordure verte */
+}
+
+/* Boutons au survol */
+.fc-button:hover {
+    color: white !important; /* Texte blanc */
+    background-color: #2ecc71 !important; /* Fond vert clair */
+    border-color: #2ecc71 !important; /* Bordure vert clair */
+}
+
+
+</style>
 <div class="card mt-4">
-    <div class="card-header bg-primary text-white">
+    <div class="btn btn-lg" style="background-color: #27ae60     ; color: white;">
         Sélectionner un Porteur de Projet
     </div>
     <div class="card-body">
@@ -28,7 +67,7 @@
 @if($selectedPorteur)
     <!-- Afficher le graphique de progression globale des projets du porteur -->
     <div class="card mt-4">
-        <div class="card-header bg-primary text-white">
+        <div class="btn btn-lg" style="background-color: #27ae60     ; color: white;">
             Progression Globale des Projets de {{ $selectedPorteur->name }}
         </div>
         <div class="card-body">
@@ -38,7 +77,7 @@
 
     <!-- Afficher la sélection d'un projet pour afficher l'état d'avancement des tâches -->
     <div class="card mt-4">
-        <div class="card-header bg-primary text-white">
+        <div class="btn btn-lg" style="background-color: #27ae60     ; color: white;">
             Sélectionner un Projet pour Voir l'État d'Avancement des Tâches
         </div>
         <div class="card-body">
@@ -62,7 +101,7 @@
     @if(request('project_id'))
         <!-- Afficher le graphique de progression des tâches du projet sélectionné -->
         <div class="card mt-4">
-            <div class="card-header bg-primary text-white">
+            <div class="btn btn-lg">
                 État d'Avancement des Tâches pour le Projet {{ $selectedProject->title }}
             </div>
             <div class="card-body">
@@ -75,8 +114,8 @@
     <!-- Calendrier des Séances -->
     <div class="col-12 mt-5">
         <div class="card shadow">
-            <div class="card-header py-3" style="background-color: #3498db; color: white;">
-                <h4 class="m-0 font-weight-bold">Calendrier des Séances de Mentorat</h4>
+            <div class="card-header py-3" style="background-color: #27ae60     ; color: white;">
+                <h4 class="m-0 font-weight-bold" style=" color: white;">Calendrier des Séances de Mentorat</h4>
             </div>
             <div class="card-body">
                 <div id="calendar" style="margin-bottom: 30px;"></div>

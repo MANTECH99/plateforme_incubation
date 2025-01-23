@@ -4,27 +4,50 @@
 
 @section('content')
 <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Liste des Utilisateurs</a></li>
-            </ol>
-        </div>
-    </div>
     <!-- Container Fluid-->
     <div class="container-fluid p-0 w-100" id="container-wrapper" style="margin: 0; padding: 0; width: 100%;">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Liste des Utilisateurs</h1>
-            <a href="{{ route('admin.users.create') }}" class="btn btn-sm btn-primary">Ajouter un Utilisateur</a>
+            <div class="d-flex align-items-center">
+                <input type="text" class="form-control me-2" placeholder="Rechercher un utilisateur..." style="width: 250px;">
+                <button class="btn btn-md" style="background-color: #27ae60; color: white;" onclick="showIframe('{{ route('admin.users.create') }}')"> Ajouter un utilisateur</button>
+            </div>
         </div>
+        <iframe 
+    id="modalFrame" 
+    src="" 
+    style="width: 100%; height: 700px; border: none; display: none;" 
+    scrolling="auto">
+</iframe>
+
+<script>
+    // Fonction pour afficher l'iframe avec le formulaire approprié
+// Fonction pour afficher l'iframe avec le formulaire approprié
+function showIframe(url) {
+    const iframe = document.getElementById('modalFrame');
+    iframe.src = url; // Définit la source de l'iframe (formulaire d'ajout ou de modification)
+    iframe.style.display = 'block'; // Affiche l'iframe
+}
+
+    // Fonction pour fermer l'iframe
+    window.addEventListener('message', function(event) {
+        if (event.data.action === 'closeIframe') {
+            const iframe = document.getElementById('modalFrame');
+            iframe.style.display = 'none'; // Cache l'iframe
+            if (event.data.status === 'success') {
+                alert('Utilisateur créé/modifié avec succès !');
+                location.reload(); // Recharge la page pour afficher les mises à jour
+            }
+        }
+    });
+</script>
         <div class="row">
             <div class="col-lg-12 mb-4">
                 <!-- Table des utilisateurs -->
                 <div class="card">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered align-items-center">
-                            <thead class="bg-secondary text-white">
+                            <thead style="background-color: #27ae60 ; color: white;">
                                 <tr>
                                     <th style="border: 1px solid #6c757d;">Nom</th>
                                     <th style="border: 1px solid #6c757d;">Email</th>
@@ -40,16 +63,24 @@
                                         <td style="border: 1px solid #6c757d;">{{ $user->role->name }}</td>
                                         <td style="border: 1px solid #6c757d;">
                                             <!-- Bouton pour ouvrir la modal -->
-                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
+                                            <button class="btn btn-sm" style="background-color: #27ae60     ; color: white;" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
                                                 Modifier
                                             </button>
+                                                <!-- Bouton Supprimer -->
+    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+            Supprimer
+        </button>
+    </form>
                                         </td>
                                     </tr>
                                     <!-- Modal pour chaque utilisateur -->
                                     <div class="modal fade" id="editUserModal{{ $user->id }}" tabindex="-1" aria-labelledby="editUserModalLabel{{ $user->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <div class="modal-header bg-success text-white">
+                                                <div class="modal-header" style="background-color: #27ae60 ; color: white;">
                                                     <h5 class="modal-title" id="editUserModalLabel{{ $user->id }}">Modifier l'Utilisateur : {{ $user->name }}</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
@@ -80,7 +111,8 @@
                                                         </div>
 
                                                         <div class="d-flex justify-content-end">
-                                                            <button type="submit" class="btn btn-success">Mettre à Jour</button>
+                                                            <button type="submit" class="btn btn-md" style="background-color: #27ae60     ; color: white;">Mettre à Jour</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Annuler</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -91,8 +123,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="card-footer text-center" style="background-color: #ecf0f1;">
-                    </div>
+                    <div class="card-footer text-center" style="background-color: #ecf0f1;"></div>
                 </div>
             </div>
         </div>

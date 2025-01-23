@@ -11,9 +11,9 @@
                     Votre navigateur ne supporte pas la lecture de cette vidéo.
                 </video>
                 <div class="card-body">
-                    <h3 class="card-title">{{ $video->title }}</h3>
-                    <p class="text-muted">{{ $video->published_at }}</p>
-                    <p>{{ $video->description }}</p>
+                    <h3 class="card-title">Titre : {{ $video->title }}</h3>
+                    <p class="text-muted">Date de publication : {{ $video->published_at }}</p>
+                    <p>Description : {{ $video->description }}</p>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
             <div class="form-group">
                 <textarea name="content" class="form-control" rows="3" placeholder="Écrivez un commentaire..." required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary mt-2">Ajouter un commentaire</button>
+            <button type="submit" class="btn btn-success mt-2" style="background-color: #27ae60     ; color: white;" >Ajouter un commentaire</button>
         </form>
         @endauth
 

@@ -47,7 +47,7 @@ body{
 }
 
 .container button{
-    background-color: green;
+    background-color: #27ae60;
     color: #fff;
     font-size: 12px;
     padding: 10px 45px;
@@ -163,7 +163,7 @@ body{
 .toggle {
     background-color: #1e7d32; /* Couleur verte principale */
     height: 100%;
-    background: linear-gradient(to right, #43a047, #1e7d32); /* Dégradé vert */
+    background: linear-gradient(to right, #43a047, #27ae60); /* Dégradé vert */
     color: #fff;
     position: relative;
     left: -100%;
@@ -210,71 +210,6 @@ body{
     transform: translateX(200%);
 }
 
-select {
-    appearance: none; /* Supprimer le style par défaut du navigateur */
-    -webkit-appearance: none; /* Supprimer le style sur Safari */
-    -moz-appearance: none; /* Supprimer le style sur Firefox */
-    padding: 10px 15px; /* Même remplissage que les autres champs */
-    background-color: #eee; /* Même couleur de fond */
-    border: none; /* Supprimer la bordure par défaut */
-    margin: 8px 0; /* Même marge que les autres champs */
-    font-size: 13px; /* Même taille de police */
-    border-radius: 8px; /* Même coins arrondis */
-    width: 100%; /* Utiliser toute la largeur */
-    outline: none; /* Supprimer le contour par défaut */
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Légère ombre pour correspondre aux autres champs */
-}
-
-select:focus {
-    outline: none; /* Supprimer le contour par défaut */
-    border-color: #6366f1; /* Couleur de la bordure en focus */
-    box-shadow: 0 0 0 2px #6366f1; /* Ombre autour du champ en focus pour correspondre aux autres */
-}
-
-.select-container {
-    position: relative;
-    width: 100%; /* Pour s'assurer que le conteneur prend toute la largeur */
-    margin: 8px 0; /* Correspondre à la marge des autres champs */
-}
-
-.select-container select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: #eee; /* Même couleur de fond que les autres champs */
-    border: none;
-    padding: 10px 15px; /* Correspondre au rembourrage des autres champs */
-    font-size: 13px;
-    border-radius: 8px;
-    width: 100%;
-    outline: none;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Légère ombre */
-}
-
-.select-container .select-icon {
-    position: absolute;
-    right: 15px; /* Place l'icône à droite à l'intérieur du champ */
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none; /* Empêche l'icône d'interférer avec le clic sur le champ */
-    color: #555; /* Couleur de l'icône */
-}
-
-.select-container select:focus {
-    outline: none; /* Supprimer le contour par défaut */
-    border-color: #6366f1; /* Couleur de la bordure en focus */
-    box-shadow: 0 0 0 2px #6366f1; /* Ombre autour du champ en focus */
-}
-
-.select-container::after {
-    content: '▼'; /* Icône Unicode pour la flèche */
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #555;
-    pointer-events: none;
-}
 .container button:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -289,4 +224,120 @@ select:focus {
     width: 350px; /* Ajuste la taille du logo */
     height: auto;
     margin-right: 40px;
+}
+
+.input-container {
+    position: relative;
+    width: 100%; /* Pour s'assurer que le conteneur prend toute la largeur */
+    margin: 8px 0;
+}
+
+.input-container i {
+    position: absolute;
+    top: 50%;
+    left: 15px; /* Ajustez l'espacement à gauche */
+    transform: translateY(-50%);
+    color: #27ae60; /* Couleur de l'icône */
+    font-size: 16px;
+}
+
+.input-container input {
+    padding-left: 40px; /* Laisse de l'espace pour l'icône */
+    background-color: #eee; /* Même couleur que les autres champs */
+    border: none;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    margin: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Même style que les autres champs */
+}
+
+/* Container des options de rôle */
+.role-options {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+    gap: 20px; /* Ajoute un espace entre les options */
+}
+
+/* Style général pour chaque option de rôle */
+.role-option {
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid #ddd; /* Bordure grise claire */
+    border-radius: 10px; /* Coins arrondis */
+    padding: 5px 10px; /* Espacement interne */
+    transition: all 0.3s ease; /* Animation fluide */
+    background-color: #f9f9f9; /* Fond par défaut */
+}
+
+/* Lorsque l'utilisateur passe la souris */
+.role-option:hover {
+    border-color: #27ae60; /* Couleur de bordure au survol */
+    background-color: rgba(0, 123, 255, 0.1); /* Fond bleu clair transparent */
+}
+
+/* Masquer le bouton radio natif */
+.role-option input {
+    display: none;
+}
+
+/* Style pour l'icône */
+.role-option .icon {
+    font-size: 1.5rem;
+    color: #666; /* Couleur par défaut */
+    margin-bottom: 5px;
+}
+
+/* Texte sous l'icône */
+.role-option span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333; /* Texte par défaut */
+}
+
+/* Style pour une option sélectionnée */
+.role-option input:checked + .icon {
+    color: #27ae60; /* Couleur verte pour l'icône sélectionnée */
+}
+
+.role-option input:checked ~ span {
+    color: #27ae60; /* Texte vert pour le rôle sélectionné */
+}
+
+/* Ajout du carré vert transparent pour une option sélectionnée */
+.role-option input:checked ~ .icon,
+.role-option input:checked ~ span {
+    background-color: rgba(30, 125, 50, 0.1); /* Fond vert clair transparent */
+    border-radius: 10px; /* Coins arrondis */
+    padding: 5px; /* Espacement autour de l'icône et du texte */
+    display: inline-block; /* Pour bien encadrer */
+}
+
+/* Encadrement général pour une option sélectionnée */
+.role-option input:checked + .icon {
+    color: #27ae60; /* Couleur blanche pour l'icône */
+}
+
+.role-option input:checked ~ .icon {
+    background-color: rgba(30, 125, 50, 0.2); /* Fond vert plus visible */
+    border: 2px solid #27ae60; /* Bordure verte */
+}
+
+.role-option input:checked ~ span {
+    font-weight: bold; /* Texte en gras pour le rôle sélectionné */
+}
+
+
+/* Logo container */
+.logos {
+    text-align: center;
+}
+
+.logos img {
+    width: 350px; /* Ajuste la taille du logo */
+    height: auto;
+    margin-right: 0px;
 }

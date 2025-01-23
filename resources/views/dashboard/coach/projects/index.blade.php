@@ -4,17 +4,62 @@
 
 @section('content')
 
-<div class="content-body" style="width: 100%; margin: 0; padding: 0;">
 
-    <!-- Breadcrumb -->
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb bg-light px-3 py-2 rounded">
-                <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Projets disponibles</a></li>
-            </ol>
-        </div>
+
+<style>
+    .horizontal-sidebar {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.horizontal-sidebar .nav-tabs {
+    border-bottom: none;
+    justify-content: center;
+}
+
+.horizontal-sidebar .nav-tabs .nav-link {
+    color: #333;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 0;
+    transition: all 0.3s ease;
+}
+
+.horizontal-sidebar .nav-tabs .nav-link.active {
+    background-color: #27ae60;
+    color: #fff;
+    font-weight: bold;
+}
+
+</style>
+<div class="container">
+    <div class="horizontal-sidebar">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('coach.projects.index') ? 'active' : '' }}" href="{{ route('coach.projects.index') }}">
+                    Projets à coacher
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('mentorship_sessions.index') ? 'active' : '' }}" href="{{ route('mentorship_sessions.index') }}">
+                    Séances de mentorat
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('profile.view') ? 'active' : '' }}" href="{{ route('profile.view') }}">
+                    Mon Profil
+                </a>
+            </li>
+        </ul>
     </div>
+    <div class="workspace-content mt-4">
+        @yield('workspace-content')
+    </div>
+</div>
+
+
+<div class="content-body" style="width: 100%; margin: 0; padding: 0;">
 
     <!-- Section Projets Disponibles -->
     <div class="container-fluid p-0 w-100" id="container-wrapper">
@@ -27,7 +72,7 @@
                 <div class="card shadow">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered align-items-center">
-                            <thead style="background-color: #3498db; color: white;">
+                            <thead style="background-color: #27ae60     ; color: white;">
                                 <tr>
                                     <th style="border: 1px solid #27ae60;">Titre</th>
                                     <th style="border: 1px solid #27ae60;">Description</th>
@@ -42,10 +87,10 @@
                                             <td style="border: 1px solid #27ae60;">{{ $project->title }}</td>
                                             <td style="border: 1px solid #27ae60;">{{ $project->description }}</td>
                                             <td style="border: 1px solid #27ae60;">{{ $project->user->name }}</td>
-                                            <td style="border: 1px solid #27ae60;">
+                                            <td style="border: 1px solid #27ae60s;">
                                                 <form action="{{ route('coach.projects.accompagner', $project->id) }}" method="POST">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-sm btn-info">Accompagner ce projet</button>
+                                                    <button type="submit" class="btn btn-sm btn-success" style="background-color: #27ae60     ; color: white;"s>Accompagner ce projet</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -68,23 +113,23 @@
                 <div class="card shadow">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered align-items-center">
-                            <thead style="background-color: #3498db; color: white;">
+                            <thead style="background-color: #27ae60     ; color: white;">
                                 <tr>
-                                    <th style="border: 1px solid #2980b9;">Titre</th>
-                                    <th style="border: 1px solid #2980b9;">Description</th>
-                                    <th style="border: 1px solid #2980b9;">Porteur de projet</th>
-                                    <th style="border: 1px solid #2980b9;">Détail</th>
+                                    <th style="border: 1px solid #27ae60;">Titre</th>
+                                    <th style="border: 1px solid #27ae60;">Description</th>
+                                    <th style="border: 1px solid #27ae60;">Porteur de projet</th>
+                                    <th style="border: 1px solid #27ae60;">Détail</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($projects as $project)
                                     @if (!is_null($project->coach_id))
                                         <tr>
-                                            <td style="border: 1px solid #2980b9;">{{ $project->title }}</td>
-                                            <td style="border: 1px solid #2980b9;">{{ $project->description }}</td>
-                                            <td style="border: 1px solid #2980b9;">{{ $project->user->name }}</td>
-                                            <td style="border: 1px solid #2980b9;">
-                                                <a href="{{ route('coach.projects.show', $project->id) }}" class="btn btn-sm btn-info">Voir Détails</a>
+                                            <td style="border: 1px solid #27ae60;">{{ $project->title }}</td>
+                                            <td style="border: 1px solid #27ae60;">{{ $project->description }}</td>
+                                            <td style="border: 1px solid #27ae60;">{{ $project->user->name }}</td>
+                                            <td style="border: 1px solid #27ae60;">
+                                                <a href="{{ route('coach.projects.show', $project->id) }}" class="btn btn-sm" style="background-color: #27ae60     ; color: white;">Voir Détails</a>
                                             </td>
                                         </tr>
                                     @endif

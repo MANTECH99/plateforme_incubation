@@ -22,6 +22,13 @@ class ProjectController extends Controller
         if ($project->coach_id !== auth()->id() && $project->coach_id !== null) {
             abort(403, 'Accès interdit');
         }
+        $tasks = $project->tasks;
+            // Parcourir chaque tâche pour vérifier et mettre à jour son statut si nécessaire
+    foreach ($tasks as $task) {
+        if ($task->due_date && now()->greaterThan($task->due_date) && $task->status != 'soumis') {
+            $task->update(['status' => 'non accompli']); // Met à jour la base de données
+        }
+    }
 
         return view('dashboard.coach.projects.show', compact('project'));
     }
@@ -136,6 +143,17 @@ class ProjectController extends Controller
     }
     
     
-    
+    public function destroy(Project $project)
+{
+    // Vérifiez que l'utilisateur connecté est le propriétaire du projet
+    if ($project->user_id !== auth()->id()) {
+        abort(403, 'Vous n\'êtes pas autorisé à supprimer ce projet.');
+    }
+
+    $project->delete();
+
+    return redirect()->route('porteur.projects.index')->with('success', 'Projet supprimé avec succès.');
+}
+
 
 }

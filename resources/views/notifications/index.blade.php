@@ -30,7 +30,7 @@
             @foreach($grouped as $type => $group)
                 <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="{{ $type }}" role="tabpanel" aria-labelledby="{{ $type }}-tab">
                     <div class="card shadow-sm">
-                        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #27ae60 ; color: white;">
                             <span>{{ ucfirst($type) }}</span>
                             <span class="badge bg-light text-dark">{{ $group->count() }} notifications</span>
                         </div>
@@ -52,7 +52,7 @@
                                             <form action="{{ route('notifications.markAsRead', $notification->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('PATCH')
-                                                <button type="submit" class="btn btn-sm btn-primary">Marquer comme lue</button>
+                                                <button type="submit" class="btn btn-sm" style="background-color: #27ae60     ; color: white;">Marquer comme lue</button>
                                             </form>
                                         @else
                                         <span class="badge bg-light text-dark border">Déjà lue</span>

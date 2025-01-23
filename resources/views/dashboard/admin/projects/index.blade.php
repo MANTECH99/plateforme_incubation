@@ -4,14 +4,6 @@
 
 @section('content')
 <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb bg-light px-3 py-2 rounded">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Liste des Projets</a></li>
-            </ol>
-        </div>
-    </div>
     <!-- Container Fluid-->
     <div class="container-fluid p-0 w-100" id="container-wrapper">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -24,7 +16,7 @@
                 <div class="card">
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered align-items-center">
-                            <thead class="bg-secondary text-white">
+                            <thead style="background-color: #27ae60 ; color: white;">
                                 <tr>
                                     <th style="border: 1px solid #6c757d;">Titre</th>
                                     <th style="border: 1px solid #6c757d;">Description</th>

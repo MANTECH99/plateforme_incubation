@@ -4,14 +4,6 @@
 
 @section('content')
     <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
-        <div class="row page-titles mx-0">
-            <div class="col p-md-0">
-                <ol class="breadcrumb bg-light px-3 py-2 rounded">
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Ajouter un Document</a></li>
-                </ol>
-            </div>
-        </div>
 
         <div class="container-fluid p-0 w-100" id="container-wrapper" style="margin: 0; padding: 0; width: 100%;">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -22,8 +14,8 @@
                 <div class="col-lg-12 mb-4">
                     <!-- Formulaire d'ajout de document -->
                     <div class="card">
-                        <div class="card-header py-3 text-white" style="background-color: #27ae60;">
-                            <h6 class="m-0 font-weight-bold">Formulaire d'ajout de document</h6>
+                        <div class="card-header py-3 text-white" style="background-color: #4CAF50     ; color: white;">
+                            <h6 class="m-0 font-weight-bold" style=" color: white;">Formulaire d'ajout de document</h6>
                         </div>
                         <div class="card-body">
                             <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
@@ -69,7 +61,7 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary mt-4">Partager</button>
+                                <button type="submit" class="btn btn-success mt-4" style="background-color: #4CAF50     ; color: white;">Partager</button>
                             </form>
                         </div>
                     </div>

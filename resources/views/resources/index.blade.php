@@ -11,13 +11,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 @if(auth()->user()->role->name == 'admin')
 <!-- Bouton pour ajouter une ressource -->
-    <div class="mb-3">
-        <a href="{{ route('resources.create') }}" class="btn btn-primary">Ajouter une Ressource</a>
+<!-- Bouton pour ouvrir le modal -->
+<div class="d-flex align-items-center">
+    <button type="button" class="btn btn-md" style="background-color: #27ae60; color: white;" data-bs-toggle="modal" data-bs-target="#addResourceModal">
+        Ajouter une Ressource
+    </button>&nbsp;&nbsp;
+    <input type="text" class="form-control me-2" placeholder="Rechercher une ressource..." style="width: 250px;">
+</div>
 
-
-
-
-    </div>
 @endif
 <div class="container mt-4">
     <!-- Section des Dossiers -->
@@ -32,7 +33,7 @@
                     <i class="fe fe-folder fe-32 text-white"></i>
                     </div>
                     <h5 class="mt-3">Documents & Bibliothèque</h5>
-                    <button class="btn btn-primary mt-2 toggle-files" data-target="#documents-section">Ouvrir</button>
+                    <button class="btn btn-success mt-2 toggle-files" style="background-color: #27ae60     ; color: white;" data-target="#documents-section">Ouvrir</button>
                 </div>
             </div>
         </div>
@@ -45,7 +46,7 @@
                         <i class="fe fe-folder fe-32 text-white"></i>
                     </div>
                     <h5 class="mt-3">Formations en ligne</h5>
-                    <button class="btn btn-primary mt-2 toggle-files" data-target="#formations-section">Ouvrir</button>
+                    <button class="btn btn-success mt-2 toggle-files" style="background-color: #27ae60     ; color: white;" data-target="#formations-section">Ouvrir</button>
                 </div>
             </div>
         </div>
@@ -58,7 +59,7 @@
                         <i class="fe fe-folder fe-32 text-white"></i>
                     </div>
                     <h5 class="mt-3">Outils Pratiques</h5>
-                    <button class="btn btn-primary mt-2 toggle-files" data-target="#tools-section">Ouvrir</button>
+                    <button class="btn btn-success mt-2 toggle-files" style="background-color: #27ae60     ; color: white;" data-target="#tools-section">Ouvrir</button>
                 </div>
             </div>
         </div>
@@ -215,6 +216,48 @@
 </div>
 
 </div>
+
+
+<!-- Modal Ajouter Ressource -->
+<div class="modal fade" id="addResourceModal" tabindex="-1" aria-labelledby="addResourceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #27ae60;">
+                <h5 class="modal-title" id="addResourceModalLabel" style="color: white;">Ajouter une Ressource</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="title">Titre :</label>
+                        <input type="text" name="title" id="title" class="form-control" required>
+                    </div>
+                    <div class="form-group mt-3">
+                                <label for="type">Type :</label>
+                                <select name="type" id="type" class="form-control">
+                                    <option value="document">Document</option>
+                                    <option value="formation">Formation</option>
+                                    <option value="outil">Outil</option>
+                                </select>
+                            </div>
+                    <div class="form-group mt-3">
+                        <label for="description">Description :</label>
+                        <textarea name="description" id="description" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="file">Fichier :</label>
+                        <input type="file" name="file" id="file" class="form-control" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-success">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- JS inclus -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
