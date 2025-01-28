@@ -3,85 +3,133 @@
 @section('title', 'Détails du Projet - ' . $project->title)
 
 @section('content')
-    <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
-        <div class="container-fluid p-0 w-100" id="container-wrapper">
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Détails du Projet : {{ $project->title }}</h1>
-            </div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content">
+            <!-- Default box -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-success" style="color: #27ae60;"><i class="bi bi-info-circle"></i> Détails du projet : {{ $project->title }}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Left Column -->
+                        <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                            <div class="row">
+                                <!-- Date de début prévue -->
+                                <div class="col-12 col-sm-4 mb-4">
+                                    <div class="card shadow-sm" style="border: 2px solid rgba(40, 167, 69, 0.5); border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title text-muted">
+                                                <i class="bi bi-calendar-event"></i> Date de début prévue
+                                            </h5>
+                                            <p class="card-text text-success h4" style="color: #27ae60;">
+                                                {{ $project->start_date ?? 'Non définie' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
 
-            <div class="row">
-                <div class="col-lg-8 mb-4">
-                    <div class="card shadow">
-                        <div class="card-header py-3" style="background-color: #4CAF50; color: white;">
-                            <h6 class="m-0 font-weight-bold">Informations du Projet</h6>
+                                <!-- Budget estimé -->
+                                <div class="col-12 col-sm-4 mb-4">
+                                    <div class="card shadow-sm" style="border: 2px solid rgba(40, 167, 69, 0.5); border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title text-muted">
+
+                                                <i class="fas fa-dollar-sign"></i> Budget estimé
+
+
+
+
+
+                                            </h5>
+                                            <p class="card-text text-success h4" style="color: #27ae60;">
+                                                {{ number_format($project->budget) }} FCFA
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Secteur d'activité -->
+                                <div class="col-12 col-sm-4 mb-4">
+                                    <div class="card shadow-sm" style="border: 2px solid rgba(40, 167, 69, 0.5); border-radius: 10px;">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title text-muted">
+                                                <i class="bi bi-briefcase"></i> Secteur d'activité
+                                            </h5>
+                                            <p class="card-text text-success h4">
+                                                {{ ucfirst($project->sector) }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 class="text-success"><i class="bi bi-flag"></i> Objectifs</h4>
+                                    <p>{{ $project->objectives }}</p><br>
+                                    <h4 class="text-success"><i class="bi bi-check-circle"></i> Statut</h4>
+                                    <p class="text-muted">
+                                        @if ($project->status === 'en cours')
+                                            <i class="bi bi-hourglass-split"></i>  <span class="badge badge-primary">En cours</span>
+                                        @elseif ($project->status === 'à venir')
+                                            <i class="bi bi-calendar3"></i> <span class="badge badge-warning">À venir</span>
+                                        @elseif ($project->status === 'terminé')
+                                            <i class="bi bi-check-circle-fill"></i> <span class="badge badge-success">Terminé</span>
+                                        @else
+                                            <i class="bi bi-x-circle"></i> <span class="badge badge-danger">Annulé</span>
+                                        @endif
+                                    </p><br>
+                                    <h4 class="text-success"><i class="bi bi-exclamation-circle"></i> Risques</h4>
+                                    <p>{{ $project->risks ?? 'Aucun risque spécifié' }}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <!-- Titre -->
-                            <p><strong>Titre :</strong> {{ $project->title }}</p>
-
-                            <!-- Description -->
-                            <p><strong>Description :</strong> {{ $project->description }}</p>
-
-                            <!-- Objectifs -->
-                            <p><strong>Objectifs :</strong> {{ $project->objectives }}</p>
-
-                            <!-- Budget -->
-                            <p><strong>Budget :</strong> €{{ number_format($project->budget, 2, ',', ' ') }}</p>
-
-                            <!-- Secteur d'activité -->
-                            <p><strong>Secteur d'activité :</strong> {{ ucfirst($project->sector) }}</p>
-
-                            <!-- Statut -->
-                            <p><strong>Statut :</strong>
-                                @if ($project->status === 'en cours')
-                                    <span class="badge badge-primary">En cours</span>
-                                @elseif ($project->status === 'à venir')
-                                    <span class="badge badge-warning">À venir</span>
-                                @elseif ($project->status === 'terminé')
-                                    <span class="badge badge-success">Terminé</span>
-                                @else
-                                    <span class="badge badge-danger">Annulé</span>
-                                @endif
-                            </p>
-
-                            <!-- Date de début prévue -->
-                            <p><strong>Date de début prévue :</strong> {{ $project->start_date ? : 'Non définie' }}</p>
-
-                            <!-- Partenaires -->
-                            <p><strong>Partenaires :</strong> {{ $project->partners ?? 'Aucun partenaire spécifié' }}</p>
-
-                            <!-- Membres de l'équipe -->
-                            <p><strong>Membres de l'équipe :</strong></p>
-                            <ul>
-                                @if ($project->team_members)
-                                    @foreach (json_decode($project->team_members, true) as $member)
-                                        <li>{{ $member }}</li>
+                        <!-- Right Column -->
+                        <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                            <h4 class="text-success"><i class="bi bi-file-text"></i> Description</h4>
+                            <p >{{ $project->description }}</p>
+                            <br>
+                            <div class="text-muted">
+                                <h4 class="text-success"><i class="bi bi-people"></i> Partenaires</h4>
+                                <p class="text-lg">{{ $project->partners ?? 'Aucun partenaire spécifié' }}</p><br>
+                                <h4 class="text-success"><i class="bi bi-person"></i> Membres de l'équipe</h4>
+                                <p class="text-lg">
+                                    @if ($project->team_members)
+                                        @foreach (json_decode($project->team_members, true) as $member)
+                                            <i class="bi bi-person-circle"></i> {{ $member }}<br>
+                                        @endforeach
+                                    @else
+                                        Aucun membre spécifié
+                                    @endif
+                                </p>
+                            </div><br>
+                            <h4 class="text-success"><i class="bi bi-folder"></i> Documents associés</h4>
+                            <ul class="list-unstyled">
+                                @if ($project->documents)
+                                    @foreach (json_decode($project->documents, true) as $document)
+                                        <li>
+                                            <a href="{{ asset('storage/' . $document) }}" class="btn-link text-secondary" target="_blank">
+                                                <i class="bi bi-file-earmark"></i> {{ basename($document) }}
+                                            </a>
+                                        </li>
                                     @endforeach
                                 @else
-                                    <li>Aucun membre spécifié</li>
+                                    <li>Aucun document associé.</li>
                                 @endif
-                            </ul>
-
-                            <!-- Risques anticipés -->
-                            <p><strong>Risques anticipés :</strong> {{ $project->risks ?? 'Aucun risque spécifié' }}</p>
-
-                            <!-- Documents associés -->
-                            <p><strong>Documents associés :</strong></p>
-                            <ul>
-                                @if($project->documents)
-                                    @foreach(json_decode($project->documents, true) as $document)
-                                        <a href="{{ asset('storage/' . $document) }}" target="_blank">Voir le fichier</a>
-                                        <a href="{{ asset('storage/' . $document) }}" download>Télécharger</a>
-                                    @endforeach
-                                @else
-                                    <p>Aucun document associé à ce projet.</p>
-                                @endif
-
                             </ul>
                         </div>
                     </div>
                 </div>
+                <!-- /.card-body -->
             </div>
-        </div>
+            <!-- /.card -->
+        </section>
+        <!-- /.content -->
     </div>
+    <!-- /.content-wrapper -->
 @endsection

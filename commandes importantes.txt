@@ -1,6 +1,9 @@
 php artisan tasks:check-deadlines
 php artisan alerts:send  
-php artisan storage:link  
+php artisan storage:link
+sélectionner et remplacer tous les éléments de même nom dans Sublime Text et PhpStorm :
+Ctrl + Alt + Shift + J sur phpstorm
+Alt + F3 sur sublime text 
 public function handleCallback(Request $request)
 {
     $authCode = $request->input('code');

@@ -82,7 +82,7 @@ class ProjectController extends Controller
                 $filePath = $file->store('project_documents', 'public');
                 $documentPaths[] = $filePath;
             }
-            // Mettre à jour la colonne `documents` avec les chemins
+            // Mettre à jour la colonne documents avec les chemins
             $project->update(['documents' => json_encode($documentPaths)]);
         }
 
@@ -91,6 +91,65 @@ class ProjectController extends Controller
             ->route(auth()->user()->role->name === 'coach' ? 'coach.projects.index' : 'porteur.projects.index')
             ->with('success', 'Projet créé avec succès.');
     }
+
+
+    public function update(Request $request, $id)
+    {
+        // Validation des données
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'objectives' => 'required|string',
+            'budget' => 'required|numeric',
+            'sector' => 'required|string',
+            'status' => 'required|string|in:en cours,à venir,terminé,annulé',
+            'start_date' => 'nullable|date',
+            'partners' => 'nullable|string',
+            'team_members' => 'nullable|array',
+            'risks' => 'nullable|string',
+            'documents.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf,docx,xlsx|max:2048',
+        ]);
+
+        // Trouver le projet existant
+        $project = Project::findOrFail($id);
+
+        // Mise à jour des valeurs du projet
+        $project->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'objectives' => $request->objectives,
+            'budget' => $request->budget,
+            'sector' => $request->sector,
+            'status' => $request->status,
+            'start_date' => $request->start_date,
+            'partners' => $request->partners,
+            'team_members' => $request->team_members ? json_encode($request->team_members) : null,
+            'risks' => $request->risks,
+        ]);
+
+        // Gérer les fichiers associés (si présents)
+        if ($request->hasFile('documents')) {
+            $documentPaths = [];
+            foreach ($request->file('documents') as $file) {
+                $filePath = $file->store('project_documents', 'public');
+                $documentPaths[] = $filePath;
+            }
+            // Mettre à jour la colonne `documents` avec les chemins
+            $project->update(['documents' => json_encode($documentPaths)]);
+        }
+
+        // Rediriger après la modification
+        return redirect()
+            ->route(auth()->user()->role->name === 'coach' ? 'coach.projects.index' : 'porteur.projects.index')
+            ->with('success', 'Projet modifié avec succès.');
+    }
+
+    public function edit($id)
+    {
+        $project = Project::findOrFail($id); // Récupère le projet à modifier
+        return view('dashboard.porteur.projects.edit', compact('project')); // Passe le projet à la vue
+    }
+
 
     public function showProject($id)
     {

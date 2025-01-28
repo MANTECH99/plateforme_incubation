@@ -271,6 +271,14 @@ Route::get('/projects/{id}', [ProjectController::class, 'showProject'])->name('p
 
 
 
+Route::prefix('porteur')->middleware('auth')->group(function () {
+    // Route pour afficher le formulaire de modification
+    Route::get('/projects/{id}/edit', [ProjectController::class, 'edit'])->name('porteur.projects.edit');
+    // Route pour soumettre les modifications
+    Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('porteur.projects.update');
+});
+
+
 
 
 

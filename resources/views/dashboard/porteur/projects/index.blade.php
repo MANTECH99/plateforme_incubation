@@ -118,18 +118,19 @@
 
                             <tr>
                                 <th>Titre</th>
-                                <th>Description</th>
+                                <th>Secteur d'activités</th>
                                 <th>Coach</th>
                                 <th>Tâches associées</th>
                                 <th>Action</th>
                                 <th>afficher le projet</th>
+                                <th>modifier le projet</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($projects as $project)
                                 <tr>
                                     <td>{{ $project->title }}</td>
-                                    <td>{{ $project->description }}</td>
+                                    <td>{{ $project->sector }}</td>
                                     <td>{{ $project->coach->name ?? 'Non assigné' }}</td>
                                     <td>
                                         <a href="{{ route('porteur.projects.tasks', ['project' => $project->id]) }}" class="btn btn-sm" style="background-color: #27ae60     ; color: white;">
@@ -149,6 +150,13 @@
                                             <a href="{{ route('projects.show', $project->id) }}" class="btn btn-sm" style="background-color: #27ae60     ; color: white;">Voir le Projet</a>
                                         </a>
                                     </td>
+                                    <td>
+                                        <!-- Bouton pour afficher le modal de modification -->
+                                        <button type="button" class="btn btn-warning btn-sm" onclick="showEditIframe({{ $project->id }})">
+                                            Modifier
+                                        </button>
+                                    </td>
+
                                 </tr>
                             @empty
                                 <tr>
@@ -158,6 +166,14 @@
                             @endforelse
                         </tbody>
                     </table>
+                    <!-- Modal de modification (iframe) -->
+                    <iframe
+                        id="modalEditFrame"
+                        src=""
+                        style="width: 100%; border: none; height: 510px; display: none;"
+                        scrolling="no">
+                    </iframe>
+
                 </div>
                 <div class="card-footer bg-light text-center">
                     <small class="text-muted">Dernière mise à jour : {{ now()->format('d/m/Y') }}</small>
@@ -167,4 +183,22 @@
     </div>
 
 </div>
+<script> // Fonction pour afficher l'iframe de modification
+    function showEditIframe(projectId) {
+        const iframe = document.getElementById('modalEditFrame');
+        iframe.src = "{{ url('porteur/projects') }}/" + projectId + "/edit"; // Remplace par l'URL d'édition du projet
+        iframe.style.display = 'block'; // Affiche l'iframe
+
+        // Optionnel: ajouter un mécanisme pour fermer le modal ou l'iframe après la soumission
+        window.addEventListener('message', function(event) {
+            if (event.data.action === 'closeIframe') {
+                iframe.style.display = 'none'; // Cache l'iframe
+                if (event.data.status === 'success') {
+                    alert('Projet modifié avec succès !'); // Message de confirmation
+                    location.reload(); // Recharge la page pour afficher les mises à jour
+                }
+            }
+        });
+    }
+</script>
 @endsection
