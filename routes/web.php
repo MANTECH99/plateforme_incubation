@@ -25,7 +25,6 @@ use App\Http\Controllers\RequestController;
 use App\Http\Controllers\WorkspaceController;
 use App\Http\Controllers\CoachWorkspaceController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\StatisticsController;
 
 Route::get('/', [AuthController::class, 'showAuthForm'])->name('auth');
 
@@ -281,9 +280,7 @@ Route::prefix('porteur')->middleware('auth')->group(function () {
 Route::get('/reports', [ReportController::class, 'generateReport'])->name('report.generate');
 Route::get('/reports/export', [ReportController::class, 'export'])->name('report.export');
 
-Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics.index');
-Route::get('/statistics/export/pdf', [StatisticsController::class, 'exportPDF'])->name('statistics.export.pdf');
-Route::get('/statistics/export/excel', [StatisticsController::class, 'exportExcel'])->name('statistics.export.excel');
+
 
 
 

@@ -106,6 +106,10 @@
         <td><strong>Sessions Ce Mois-ci :</strong></td>
         <td>{{ $sessionsThisMonth }}</td>
     </tr>
+    <tr>
+    <th>Durée moyenne</th>
+    <td>{{ number_format($mentorshipStats['average_duration'], 0) }} minutes</td>
+    </tr>
 </table>
 <h2>Répartition Mensuelle des Projets</h2>
 <table>
@@ -123,6 +127,22 @@
         </tr>
     @endforeach
     </tbody>
+</table>
+
+<h2>Performance des Tâches</h2>
+<table>
+    <tr>
+        <th>Total des tâches</th>
+        <td>{{ $taskStats['total'] }}</td>
+    </tr>
+    <tr>
+        <th>Taux de complétion</th>
+        <td>{{ number_format($taskStats['completion_rate'], 1) }}%</td>
+    </tr>
+    <tr>
+        <th>Temps moyen de complétion</th>
+        <td>{{ number_format($taskStats['average_completion_time'], 1) }} jours</td>
+    </tr>
 </table>
 <footer>
     Généré automatiquement le {{ now()->format('d/m/Y à H:i:s') }}

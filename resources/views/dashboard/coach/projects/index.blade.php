@@ -51,6 +51,11 @@
                     Mon Profil
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('report.generate') ? 'active' : '' }}" href="{{ route('report.generate') }}">
+                    Systéme de reporting
+                </a>
+            </li>
         </ul>
     </div>
     <div class="workspace-content mt-4">
@@ -62,7 +67,7 @@
 <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
 
     <!-- Section Projets Disponibles -->
-    <div class="container-fluid p-0 w-100" id="container-wrapper">        <a href="{{ route('report.generate') }}" class="btn btn-md" style="background-color: #27ae60     ; color: white;">report</a>&nbsp;&nbsp;
+    <div class="container-fluid p-0 w-100" id="container-wrapper">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Projets disponibles</h1>
         </div>
