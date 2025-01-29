@@ -62,7 +62,7 @@
 <div class="content-body" style="width: 100%; margin: 0; padding: 0;">
 
     <!-- Section Projets Disponibles -->
-    <div class="container-fluid p-0 w-100" id="container-wrapper">
+    <div class="container-fluid p-0 w-100" id="container-wrapper">        <a href="{{ route('report.generate') }}" class="btn btn-md" style="background-color: #27ae60     ; color: white;">report</a>&nbsp;&nbsp;
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Projets disponibles</h1>
         </div>
@@ -116,9 +116,10 @@
                             <thead style="background-color: #27ae60     ; color: white;">
                                 <tr>
                                     <th style="border: 1px solid #27ae60;">Titre</th>
-                                    <th style="border: 1px solid #27ae60;">Description</th>
+                                    <th style="border: 1px solid #27ae60;">Statut</th>
                                     <th style="border: 1px solid #27ae60;">Porteur de projet</th>
                                     <th style="border: 1px solid #27ae60;">Détail</th>
+                                    <th>afficher le projet</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -126,10 +127,22 @@
                                     @if (!is_null($project->coach_id))
                                         <tr>
                                             <td style="border: 1px solid #27ae60;">{{ $project->title }}</td>
-                                            <td style="border: 1px solid #27ae60;">{{ $project->description }}</td>
+                                            <td style="border: 1px solid #27ae60;"> @if ($project->status === 'en cours')
+                                                    <i class="bi bi-hourglass-split"></i>  <span class="badge badge-primary">En cours</span>
+                                                @elseif ($project->status === 'à venir')
+                                                    <i class="bi bi-calendar3"></i> <span class="badge badge-warning">À venir</span>
+                                                @elseif ($project->status === 'terminé')
+                                                    <i class="bi bi-check-circle-fill"></i> <span class="badge badge-success">Terminé</span>
+                                                @else
+                                                    <i class="bi bi-x-circle"></i> <span class="badge badge-danger">Annulé</span>
+                                                @endif</td>
                                             <td style="border: 1px solid #27ae60;">{{ $project->user->name }}</td>
                                             <td style="border: 1px solid #27ae60;">
                                                 <a href="{{ route('coach.projects.show', $project->id) }}" class="btn btn-sm" style="background-color: #27ae60     ; color: white;">Voir Détails</a>
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('projects.show', $project->id) }}" class="btn btn-sm" style="background-color: #27ae60     ; color: white;">Voir le Projet</a>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endif
