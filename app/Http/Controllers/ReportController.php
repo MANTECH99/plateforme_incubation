@@ -9,6 +9,7 @@ use App\Models\Task;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 
@@ -18,23 +19,43 @@ class ReportController extends Controller
     public function generateReport(Request $request)
     {
         $period = $request->input('period', 'month');
-        $month = $month ?? now()->format('m');
-        $year = $year ?? now()->format('Y');
-
-
-
-
-        // Déterminer la plage de dates
-        if ($period === 'month') {
-            $startDate = now()->startOfMonth();
-            $endDate = now()->endOfMonth();
+        // Déterminer la date de début en fonction de la période sélectionnée
+        $month = $request->input('month', now()->format('m'));
+        $year = $request->input('year', now()->format('Y'));
+        // Gestion des périodes
+        if ($period === 'year') {
+            $startDate = Carbon::createFromDate($year, 1, 1)->startOfDay();
+            $endDate = Carbon::createFromDate($year, 12, 31)->endOfDay();
+        } elseif ($period === 'month') {
+            $startDate = Carbon::createFromDate($year, $month, 1)->startOfDay();
+            $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth()->endOfDay(); // Assurez-vous que l'heure de fin est à la fin du mois
         } elseif ($period === 'specific') {
-            $startDate = Carbon::createFromDate($year, $month, 1);
-            $endDate = $startDate->copy()->endOfMonth();
-        } else {
+            $startDate = Carbon::createFromDate($year, $month, 1)->startOfDay();
+            $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth()->endOfDay();
+        } elseif ($period === 'quarter') {
+            $quarter = ceil($month / 3);
+            $startMonth = ($quarter - 1) * 3 + 1;
+            $endMonth = $startMonth + 2;
+
+            $startDate = Carbon::createFromDate($year, $startMonth, 1)->startOfDay();
+            $endDate = Carbon::createFromDate($year, $endMonth, 1)->endOfMonth()->endOfDay(); // Fin du trimestre
+        } elseif ($period === 'week') {
+            // Calculer le début et la fin de la semaine en fonction de la date actuelle
+            $startDate = Carbon::now()->startOfWeek()->startOfDay(); // Lundi de cette semaine
+            $endDate = Carbon::now()->endOfWeek()->endOfDay(); // Dimanche de cette semaine
+        }else {
+            // Pour une période personnalisée
             $startDate = $this->getStartDate($period);
             $endDate = now();
         }
+
+// Ajouter un log avant d'exécuter la requête pour vérifier les dates
+        Log::info('Période sélectionnée pour les sessions de mentoratss', [
+            'start_date' => $startDate->toDateTimeString(),
+            'end_date' => $endDate->toDateTimeString(),
+        ]);
+
+
 
         // Filtrer les projets en fonction de la période
         $projects = Project::with(['user', 'coach', 'tasks'])
@@ -86,7 +107,8 @@ class ReportController extends Controller
 
         // Statistiques des projets, tâches et mentorat selon la période
         $projectStats = $this->getProjectStats($startDate);
-        $taskStats = $this->getTaskStats($startDate);
+        $taskStats = $this->getTaskStats($startDate, $endDate);
+
 
 
         $mentorshipStats = $this->getMentorshipStats($startDate, $endDate);
@@ -193,27 +215,30 @@ class ReportController extends Controller
         ];
     }
 
-    private function getTaskStats($startDate)
+    private function getTaskStats($startDate, $endDate)
     {
-        $totalTasks = Task::where('created_at', '>=', $startDate)->count();
 
-        $tasksByStatus = Task::where('created_at', '>=', $startDate)
+        $totalTasks = Task::whereBetween('created_at', [$startDate, $endDate])->count();
+
+        $tasksByStatus = Task::whereBetween('created_at', [$startDate, $endDate])
             ->select('status', DB::raw('count(*) as total'))
             ->groupBy('status')
             ->get();
 
-        $completionRate = Task::where('created_at', '>=', $startDate)
+        $completionRate = Task::whereBetween('created_at', [$startDate, $endDate])
                 ->whereIn('status', ['soumis', 'terminé'])
                 ->count() / ($totalTasks ?: 1) * 100;
 
-        $averageCompletionTime = Task::where('created_at', '>=', $startDate)
+        $averageCompletionTime = Task::whereBetween('created_at', [$startDate, $endDate])
             ->whereNotNull('due_date')
             ->select(DB::raw('AVG(DATEDIFF(due_date, created_at)) as avg_days'))
             ->first()
-            ->avg_days;
+            ->avg_days ?? 0; // Évite d'afficher NULL
 
-        $tasksOverdue = Task::where('due_date', '<', now())
-            ->where('status', '!=', 'soumis')
+        // 🔥 Correction ici : Filtrer les tâches en retard **uniquement pour la période sélectionnée**
+        $tasksOverdue = Task::whereBetween('created_at', [$startDate, $endDate]) // ✅ Respecte la période choisie
+        ->whereBetween('due_date', [$startDate, $endDate]) // ✅ Filtrer les tâches avec due_date <= endDate
+        ->where('status', '!=', 'soumis')
             ->count();
 
         return [
@@ -225,11 +250,10 @@ class ReportController extends Controller
         ];
     }
 
-    private function getMentorshipStats($startDate, $endDate = null)
+
+    private function getMentorshipStats($startDate, $endDate)
     {
-        if (!$endDate) {
-            $endDate = now(); // Par défaut, la fin est aujourd'hui
-        }
+
 
         $totalSessions = MentorshipSession::whereBetween('start_time', [$startDate, $endDate])->count();
 
@@ -259,6 +283,7 @@ class ReportController extends Controller
     }
 
 
+
     private function getAdditionalStats($startDate)
     {
         $activeProjects = Project::where('status', 'en cours')->count();
@@ -285,9 +310,46 @@ class ReportController extends Controller
     // Méthode pour exporter le rapport
     public function export(Request $request)
     {
+
+
+
         $format = $request->input('format');
+
+        $period = $request->input('period', 'month');
+        // Déterminer la date de début en fonction de la période sélectionnée
         $month = $request->input('month', now()->format('m'));
         $year = $request->input('year', now()->format('Y'));
+        // Gestion des périodes
+        if ($period === 'year') {
+            $startDate = Carbon::createFromDate($year, 1, 1)->startOfDay();
+            $endDate = Carbon::createFromDate($year, 12, 31)->endOfDay();
+        } elseif ($period === 'month') {
+            $startDate = Carbon::createFromDate($year, $month, 1)->startOfDay();
+            $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth()->endOfDay(); // Assurez-vous que l'heure de fin est à la fin du mois
+        } elseif ($period === 'specific') {
+            $startDate = Carbon::createFromDate($year, $month, 1)->startOfDay();
+            $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth()->endOfDay();
+        } elseif ($period === 'quarter') {
+            $quarter = ceil($month / 3);
+            $startMonth = ($quarter - 1) * 3 + 1;
+            $endMonth = $startMonth + 2;
+
+            $startDate = Carbon::createFromDate($year, $startMonth, 1)->startOfDay();
+            $endDate = Carbon::createFromDate($year, $endMonth, 1)->endOfMonth()->endOfDay(); // Fin du trimestre
+        } elseif ($period === 'week') {
+            // Calculer le début et la fin de la semaine en fonction de la date actuelle
+            $startDate = Carbon::now()->startOfWeek()->startOfDay(); // Lundi de cette semaine
+            $endDate = Carbon::now()->endOfWeek()->endOfDay(); // Dimanche de cette semaine
+        }else {
+            // Pour une période personnalisée
+            $startDate = $this->getStartDate($period);
+            $endDate = now();
+        }
+// Ajouter un log avant d'exécuter la requête pour vérifier les dates
+        Log::info('Période sélectionnée pour les sessions de mentorat', [
+            'start_date' => $startDate->toDateTimeString(),
+            'end_date' => $endDate->toDateTimeString(),
+        ]);
 
         // Collecte des données pour l'exportation
         $projects = Project::with(['user', 'coach'])->withCount('tasks')->get();
@@ -314,20 +376,18 @@ class ReportController extends Controller
         // Récupérer les sessions de mentorat
         $mentorSessions = MentorshipSession::all();
         $totalMentorshipSessions = $mentorSessions->count();
-        $sessionsThisMonth = MentorshipSession::whereMonth('created_at', $month)
-            ->whereYear('created_at', $year)
-            ->count();
 
-        $period = $request->input('period', 'month');
-        // Déterminer la date de début en fonction de la période sélectionnée
-        $startDate = $this->getStartDate($period);
+
+
+
+
 
 
 
 
         $data = [
-            'taskStats' => $this->getTaskStats($startDate),
-            'mentorshipStats' => $this->getMentorshipStats($startDate),
+            'taskStats' => $this->getTaskStats($startDate, $endDate),
+            'mentorshipStats' => $this->getMentorshipStats($startDate, $endDate),
             'month' => $month,
             'year' => $year,
             'projects' => $projects,
@@ -342,7 +402,6 @@ class ReportController extends Controller
             'completedTasks' => $completedTasks,
             'overdueTasks' => $overdueTasks,
             'totalMentorshipSessions' => $totalMentorshipSessions,
-            'sessionsThisMonth' => $sessionsThisMonth,
             // Ajouter les détails des projets
             'projectDetails' => Project::select('title', 'sector', 'budget', 'status', 'created_at')
                 ->withCount('tasks')

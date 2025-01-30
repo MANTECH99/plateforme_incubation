@@ -99,10 +99,11 @@
                     </select>
                     <label for="year" class="form-label">Année :</label>
                     <select name="year" id="year" class="form-select">
-                        @foreach(range(date('Y') - 5, date('Y')) as $y)
-                            <option value="{{ $y }}" {{ request('year') == $y ? 'selected' : '' }}>{{ $y }}</option>
+                        @foreach(range(date('Y') - 5, date('Y') + 1) as $y) <!-- Permet d'inclure 2025 -->
+                        <option value="{{ $y }}" {{ request('year', date('Y')) == $y ? 'selected' : '' }}>{{ $y }}</option>
                         @endforeach
                     </select>
+
                 </div>
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-primary w-100">Générer le rapport</button>
@@ -123,8 +124,10 @@
 
         <!-- Boutons pour exporter les rapports -->
         <div class="mb-4">
-            <a href="{{ route('report.export', ['format' => 'pdf', 'month' => $selectedMonth, 'year' => $selectedYear]) }}" class="btn btn-danger me-2">Exporter en PDF</a>
-            <a href="{{ route('report.export', ['format' => 'excel', 'month' => $selectedMonth, 'year' => $selectedYear]) }}" class="btn btn-success">Exporter en Excel</a>
+            <a href="{{ route('report.export', ['format' => 'pdf', 'period' => request('period'), 'month' => request('month'), 'year' => request('year'), 'start_date' => request('start_date')]) }}" class="btn btn-danger me-2">Exporter en PDF</a>
+
+            <a href="{{ route('report.export', ['format' => 'excel', 'period' => request('period'), 'month' => request('month'), 'year' => request('year'), 'start_date' => request('start_date')]) }}" class="btn btn-success">Exporter en Excel</a>
+
         </div>
 
         <div class="row">

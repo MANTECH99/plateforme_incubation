@@ -104,7 +104,7 @@
     </tr>
     <tr>
         <td><strong>Sessions Ce Mois-ci :</strong></td>
-        <td>{{ $sessionsThisMonth }}</td>
+        <td>{{ $mentorshipStats['total'] }}</td>
     </tr>
     <tr>
     <th>Durée moyenne</th>
