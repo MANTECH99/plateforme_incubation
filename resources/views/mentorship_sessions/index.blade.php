@@ -46,7 +46,7 @@
 
 <style>
     .horizontal-sidebar {
-    background-color: rgba(30, 125, 50, 0.1); 
+    background-color: rgba(30, 125, 50, 0.1);
     border-bottom: 1px solid #ddd;
     padding: 10px 0;
 }
@@ -117,6 +117,11 @@
                     Mon Profil
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('report.generate') ? 'active' : '' }}" href="{{ route('report.generate') }}">
+                    Systéme de reporting
+                </a>
+            </li>
         </ul>
     </div>
     <div class="workspace-content mt-4">
@@ -170,7 +175,7 @@
     @endif
 </td>
                                     <td>
-                                    
+
                                         @if(auth()->user()->role->name === 'coach')
                                             <div class="btn-group">
                                                 <form action="{{ route('mentorship_sessions.destroy', $session->id) }}" method="POST" style="display: inline;">

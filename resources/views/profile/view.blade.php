@@ -59,6 +59,11 @@
                     Mon Profil
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('report.generate') ? 'active' : '' }}" href="{{ route('report.generate') }}">
+                    Systéme de reporting
+                </a>
+            </li>
         </ul>
     </div>
     <div class="workspace-content mt-4">
@@ -151,7 +156,7 @@
 
 																<div class="task-name"> Domaine d'expertise</div>
 																<p>{{ $user->expertise }}</p>
-																
+
 															</li>
 															<li>
 																<div class="date">{{ $user->updated_at->format('d-m-Y') }}</div>
@@ -162,25 +167,25 @@
 																<div class="date">{{ $user->updated_at->format('d-m-Y') }}</div>
 																<div class="task-name"> Nom du startup</div>
 																<p>{{ $user->startup_nom }}</p>
-																
+
 															</li>
 															<li>
 																<div class="date">{{ $user->updated_at->format('d-m-Y') }}</div>
 																<div class="task-name"> Slogan du startup</div>
 																<p>{{ $user->startup_slogan }}</p>
-																
+
 															</li>
                                                             <li>
 																<div class="date">{{ $user->updated_at->format('d-m-Y') }}</div>
 																<div class="task-name"> Adresse du startup</div>
 																<p>{{ $user->startup_adresse }}</p>
-																
+
 															</li>
                                                             <li>
 																<div class="date">{{ $user->updated_at->format('d-m-Y') }}</div>
 																<div class="task-name"> Mon pitch</div>
 																<p>{{ $user->pitch }}</p>
-																
+
 															</li>
 														</ul>
 													</div><br>
@@ -197,7 +202,7 @@
 												</div>
 											</div>
 										</div>
-                                        
+
 
                                         <!-- Section Paramètres -->
                                         <div class="tab-pane fade height-100-p" id="setting" role="tabpanel">
@@ -301,7 +306,7 @@
                                                             </div>
                                                         </li>
                                                     </ul>
-                                                    
+
                                                     <div class="text-right">
                                                         <button class="btn btn-primary" type="submit">Sauvegarder</button>
                                                     </div>

@@ -219,7 +219,10 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header bg-warning text-white">Rapport Mensuel ({{ date('F Y', mktime(0, 0, 0, $selectedMonth, 1, $selectedYear)) }})</div>
+                <div class="card-header bg-warning text-white">
+                    Rapport Mensuel ({{ date('F Y', mktime(0, 0, 0, (int) $selectedMonth, 1, (int) $selectedYear)) }})
+                </div>
+
                 <div class="card-body">
                     <p><strong>Projets créés :</strong> {{ $monthlyProjects->count() }}</p>
                     <p><strong>Tâches terminées :</strong> {{ $tasksCompleted }}</p>

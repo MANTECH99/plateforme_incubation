@@ -46,6 +46,11 @@
                     Mon Profil
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('report.generate') ? 'active' : '' }}" href="{{ route('report.generate') }}">
+                    Systéme de reporting
+                </a>
+            </li>
         </ul>
     </div>
     <div class="workspace-content mt-4">
@@ -128,7 +133,7 @@
 </section><!-- /Hero Section -->
 
 <!-- Scroll Top -->
-<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>                                   
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 			</div>
 
 		</div>

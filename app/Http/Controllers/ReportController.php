@@ -14,22 +14,25 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    // Méthode pour générer un rapport complet
 // Méthode pour générer un rapport complet
     public function generateReport(Request $request)
     {
         $period = $request->input('period', 'month');
-        $month = $request->input('month', now()->format('m')); // Mois par défaut
-        $year = $request->input('year', now()->format('Y')); // Année par défaut
+        $month = $month ?? now()->format('m');
+        $year = $year ?? now()->format('Y');
 
-        // Déterminer la date de début en fonction de la période sélectionnée
-        $startDate = $this->getStartDate($period);
 
-        // Si "Mois/Année spécifique" est sélectionné, utiliser la date exacte
-        if ($period === 'specific') {
+
+
+        // Déterminer la plage de dates
+        if ($period === 'month') {
+            $startDate = now()->startOfMonth();
+            $endDate = now()->endOfMonth();
+        } elseif ($period === 'specific') {
             $startDate = Carbon::createFromDate($year, $month, 1);
-            $endDate = $startDate->copy()->endOfMonth(); // Fin du mois
+            $endDate = $startDate->copy()->endOfMonth();
         } else {
+            $startDate = $this->getStartDate($period);
             $endDate = now();
         }
 
@@ -50,10 +53,19 @@ class ReportController extends Controller
         // Statistiques des tâches
         $totalTasks = Task::whereBetween('created_at', [$startDate, $endDate])->count();
         $completedTasks = Task::whereBetween('created_at', [$startDate, $endDate])->where('status', 'soumis')->count();
+        $tasksCompleted = Task::whereBetween('created_at', [$startDate, $endDate])
+            ->where('status', 'soumis')
+            ->count();
+
+        $tasksInProgress = Task::whereBetween('created_at', [$startDate, $endDate])
+            ->where('status', 'en cours')
+            ->count();
+
         $overdueTasks = Task::where('due_date', '<', now())
             ->where('status', '!=', 'soumis')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->count();
+
 
         // Projets par coach
         $projectsByCoach = $projects->groupBy('coach_id')->map(function ($projects, $coachId) {
@@ -70,16 +82,19 @@ class ReportController extends Controller
                 Carbon::parse($project->created_at)->year == $year;
         });
 
-        $tasksCompleted = $monthlyProjects->flatMap->tasks->where('status', 'soumis')->count();
-        $tasksInProgress = $monthlyProjects->flatMap->tasks->where('status', 'en cours')->count();
+
 
         // Statistiques des projets, tâches et mentorat selon la période
         $projectStats = $this->getProjectStats($startDate);
         $taskStats = $this->getTaskStats($startDate);
-        $mentorshipStats = $this->getMentorshipStats($startDate);
+
+
+        $mentorshipStats = $this->getMentorshipStats($startDate, $endDate);
+
         $additionalStats = $this->getAdditionalStats($startDate);
-        $selectedMonth = $month;
-        $selectedYear = $year;
+        $selectedMonth = $month ?? now()->format('m');
+        $selectedYear = $year ?? now()->format('Y');
+
         $monthlyProjectsStats = Project::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->groupBy('month')
@@ -117,6 +132,8 @@ class ReportController extends Controller
             'selectedMonth' => $selectedMonth,
             'selectedYear' => $selectedYear,
             'monthlyProjectsStats' => $monthlyProjectsStats, // ✅ Ajout ici
+            'startDate' => $startDate,
+            'endDate' => $endDate,
 
         ]);
     }
@@ -208,22 +225,26 @@ class ReportController extends Controller
         ];
     }
 
-    private function getMentorshipStats($startDate)
+    private function getMentorshipStats($startDate, $endDate = null)
     {
-        $totalSessions = MentorshipSession::where('start_time', '>=', $startDate)->count();
+        if (!$endDate) {
+            $endDate = now(); // Par défaut, la fin est aujourd'hui
+        }
 
-        $sessionsByMonth = MentorshipSession::where('start_time', '>=', $startDate)
+        $totalSessions = MentorshipSession::whereBetween('start_time', [$startDate, $endDate])->count();
+
+        $sessionsByMonth = MentorshipSession::whereBetween('start_time', [$startDate, $endDate])
             ->select(DB::raw('MONTH(start_time) as month'), DB::raw('count(*) as total'))
             ->groupBy('month')
             ->orderBy('month')
             ->get();
 
-        $averageDuration = MentorshipSession::where('start_time', '>=', $startDate)
+        $averageDuration = MentorshipSession::whereBetween('start_time', [$startDate, $endDate])
             ->select(DB::raw('AVG(TIMESTAMPDIFF(MINUTE, start_time, end_time)) as avg_duration'))
             ->first()
             ->avg_duration;
 
-        $sessionsByCoach = MentorshipSession::where('start_time', '>=', $startDate)
+        $sessionsByCoach = MentorshipSession::whereBetween('start_time', [$startDate, $endDate])
             ->with('coach')
             ->select('coach_id', DB::raw('count(*) as total'))
             ->groupBy('coach_id')
@@ -236,6 +257,7 @@ class ReportController extends Controller
             'by_coach' => $sessionsByCoach
         ];
     }
+
 
     private function getAdditionalStats($startDate)
     {
