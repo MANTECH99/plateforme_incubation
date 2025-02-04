@@ -137,6 +137,7 @@
 
 @if(auth()->user()->role->name == 'coach')
                 <a href="{{ route('google.redirect') }}" class="btn btn-success mb-3"> <i class="fa fa-plus-circle"></i> Se connecter avec Google pour créer une séance</a>
+        <a  href="{{ route('mentorship_sessions.create') }}" class="btn btn-success mb-3"> <i class="fa fa-plus-circle"></i> créer une séance</a>
             @endif
         <!-- Table des Séances de Mentorat -->
         <div class="col-12 mt-5">

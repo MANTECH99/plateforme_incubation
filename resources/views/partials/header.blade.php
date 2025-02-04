@@ -67,7 +67,7 @@
     100% {
         transform: translateX(-100%); /* Texte défile vers la gauche */
     }
-}   
+}
 
 /* Logo container */
 .logoss {
@@ -155,8 +155,11 @@
                 <img id="image" src="{{ asset('storage/' . $user->profile_picture) }}" alt="Picture">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                <a class="dropdown-item" href="{{ route('profile.editt') }}">
+                <a class="dropdown-item" href="{{ route('profile.create') }}">
                     <i class="icon-user"></i>Remplir mon profil
+                    </a>
+                    <a class="dropdown-item" href="{{ route('profile.view') }}">
+                        <i class="icon-user"></i> mon profil
                     </a>
                     <a class="dropdown-item" href="{{ url('/profile') }}">
                     <i class="ti-settings text-primary"></i>Paramétres

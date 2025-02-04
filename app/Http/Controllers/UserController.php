@@ -25,10 +25,10 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all(); // Récupère tous les rôles disponibles pour les assigner à un utilisateur
-    
+
         return view('dashboard.admin.users.edit', compact('user', 'roles'));
     }
-    
+
     // Met à jour les informations de l'utilisateur
     public function update(Request $request, User $user)
     {
@@ -70,10 +70,10 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'Utilisateur créé avec succès.');
     }
 
-    public function editProfile()
+    public function createProfile()
 {
     $user = auth()->user(); // Récupère l'utilisateur connecté
-    return view('profile.editt', compact('user'));
+    return view('profile.create', compact('user'));
 }
 
 public function updateProfile(Request $request)
@@ -128,20 +128,76 @@ public function updateProfile(Request $request)
         $user->update(['profile_picture' => $filePath]); // Stocke le chemin relatif dans la base de données
     }
 
-    
-    
+
+
 
     return redirect()->route('profile.view')->with('success', 'Profil mis à jour avec succès.');
 }
+
+
+    public function storeProfile(Request $request)
+    {
+        $request->validate([
+            'fonction' => 'nullable|string|max:255',
+            'genre' => 'nullable|in:Homme,Femme',
+            'biographie' => 'nullable|string|max:1000',
+            'telephone' => 'nullable|string|max:20',
+            'ville' => 'nullable|string|max:255',
+            'date_naissance' => 'nullable|date',
+            'instagram' => 'nullable|string|max:255',
+            'facebook' => 'nullable|string|max:255',
+            'linkedin' => 'nullable|string|max:255',
+            'twitter' => 'nullable|string|max:255',
+            'startup_nom' => 'nullable|string|max:255',
+            'startup_slogan' => 'nullable|string|max:255',
+            'expertise' => 'nullable|string|max:1000',
+            'startup_adresse' => 'nullable|string|max:255',
+            'startup_secteur' => 'nullable|string|max:255',
+            'experience' => 'nullable|string|max:1000',
+            'pitch' => 'nullable|string|max:2000',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $user = auth()->user();
+
+        // Créer les données utilisateur
+        $user->update([
+            'fonction' => $request->fonction,
+            'genre' => $request->genre,
+            'biographie' => $request->biographie,
+            'telephone' => $request->telephone,
+            'ville' => $request->ville,
+            'date_naissance' => $request->date_naissance,
+            'instagram' => $request->instagram,
+            'facebook' => $request->facebook,
+            'linkedin' => $request->linkedin,
+            'twitter' => $request->twitter,
+            'startup_nom' => $request->startup_nom,
+            'startup_slogan' => $request->startup_slogan,
+            'expertise' => $request->expertise,
+            'startup_adresse' => $request->startup_adresse,
+            'startup_secteur' => $request->startup_secteur,
+            'experience' => $request->experience,
+            'pitch' => $request->pitch,
+        ]);
+
+        if ($request->hasFile('profile_picture')) {
+            $fileName = $user->id . '_profile.' . $request->profile_picture->getClientOriginalExtension();
+            $filePath = $request->file('profile_picture')->storeAs('profile_pictures', $fileName, 'public'); // Sauvegarde dans storage/app/public/profile_pictures
+            $user->update(['profile_picture' => $filePath]); // Stocke le chemin relatif dans la base de données
+        }
+
+        return redirect()->route('profile.view')->with('success', 'Profil créé avec succès.');
+    }
 
 
 
 public function showProfile()
 {
     $user = Auth::user(); // Récupère l'utilisateur actuellement connecté
-    
+
     // Récupère les projets liés à cet utilisateur
-    $projects = Project::where('user_id', $user->id)->get(); 
+    $projects = Project::where('user_id', $user->id)->get();
 
     // Récupère toutes les tâches associées aux projets de l'utilisateur
     $tasks = Task::whereIn('project_id', $projects->pluck('id'))->get();

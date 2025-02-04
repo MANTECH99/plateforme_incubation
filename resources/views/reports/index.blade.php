@@ -3,6 +3,7 @@
 @section('title', 'Rapport Statistique')
 
 @section('content')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>#statusChart {
             max-height: 310px !important; /* Réduire la hauteur */
         }
@@ -71,13 +72,13 @@
         </div>
     </div>
     <div class="container-fluid p-0 m-0" style="min-height: 100vh;">
-        <h1 class="mb-4 text-center">Rapport Statistique</h1>
+        <h1 class="mb-4 text-center">Rapport Statistique Global</h1>
 
         <form method="GET" action="{{ route('report.generate') }}" class="mb-4">
             <div class="row align-items-end">
                 <div class="col-md-4">
-                    <label for="period" class="form-label">Période :</label>
-                    <select name="period" id="period" class="form-select" onchange="toggleDateSelection()">
+                    <label for="period" class="form-label mb-0" style="background-color: #27ae60; color: white; padding: 7px; border-radius: 8px; font-weight: bold; margin-right: 10px;">Période :</label>
+                    <select name="period" id="period" class="form-select" onchange="toggleDateSelection()" style="border-radius: 8px; padding-left: 35px; height: 33px;">
                         <option value="week" {{ request('period') == 'week' ? 'selected' : '' }}>Cette semaine</option>
                         <option value="month" {{ request('period') == 'month' ? 'selected' : '' }}>Ce mois</option>
                         <option value="quarter" {{ request('period') == 'quarter' ? 'selected' : '' }}>Ce trimestre</option>
@@ -106,7 +107,7 @@
 
                 </div>
                 <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary w-100">Générer le rapport</button>
+                    <button type="submit" class="btn btn-success w-100" style="background-color: #27ae60; color: white">Générer le rapport</button>
                 </div>
             </div>
         </form>
@@ -122,13 +123,46 @@
         </script>
 
 
-        <!-- Boutons pour exporter les rapports -->
-        <div class="mb-4">
-            <a href="{{ route('report.export', ['format' => 'pdf', 'period' => request('period'), 'month' => request('month'), 'year' => request('year'), 'start_date' => request('start_date')]) }}" class="btn btn-danger me-2">Exporter en PDF</a>
+        <div class="mb-4 d-flex align-items-center">
+            <!-- Bouton Exporter en PDF (rouge Adobe) -->
+            <a href="{{ route('report.export', ['format' => 'pdf', 'period' => request('period'), 'month' => request('month'), 'year' => request('year'), 'start_date' => request('start_date')]) }}"
+               class="btn me-2"
+               style="background-color: #FF0000; color: white;">
+                <i class="fas fa-file-pdf fa-lg"></i>&nbsp; Exporter en PDF
+            </a>&nbsp;&nbsp;
 
-            <a href="{{ route('report.export', ['format' => 'excel', 'period' => request('period'), 'month' => request('month'), 'year' => request('year'), 'start_date' => request('start_date')]) }}" class="btn btn-success">Exporter en Excel</a>
+            <!-- Bouton Exporter en Excel (vert Excel) -->
+            <a href="{{ route('report.export', ['format' => 'excel', 'period' => request('period'), 'month' => request('month'), 'year' => request('year'), 'start_date' => request('start_date')]) }}"
+               class="btn me-2"
+               style="background-color: #217346; color: white;">
+                <i class="fas fa-file-excel fa-lg"></i>&nbsp; Exporter en Excel
+            </a>&nbsp;&nbsp;
 
+            <!-- Bouton Envoyer par e-mail (bleu Outlook) -->
+            <form action="{{ route('reports.send.email') }}" method="POST" style="display: inline;">
+                @csrf
+                <input type="hidden" name="period" value="{{ request('period') }}">
+                <button type="submit" class="btn me-2" style="background-color: #0072C6; color: white;">
+                    <i class="fas fa-envelope fa-lg"></i>&nbsp; Envoyer le rapport généré par e-mail
+                </button>
+            </form>&nbsp;&nbsp;
+
+
+            <div class="input-group" style="width: 300px;">
+        <span class="input-group-text" style="background-color: #27ae60; color: white;">
+            <i class="fas fa-user"></i>
+        </span>&nbsp;
+                <select id="porteurSelect" class="form-select" onchange="window.location.href = this.value;" style="border-radius: 10px; padding-left: 5px;">
+                    <option value="">-- Choisir un porteur de projet --</option>
+                    @foreach($porteurs as $porteur)
+                        <option value="{{ route('report.porteur', $porteur->id) }}">
+                            {{ $porteur->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
         </div>
+
 
         <div class="row">
             <div class="col-md-4">
@@ -140,7 +174,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card text-white bg-success mb-3">
+                <div class="card" style="background: linear-gradient(to right, #27ae60, #27ae60);">
                     <div class="card-body">
                         <h5 class="card-title">Projets Terminés</h5>
                         <p class="card-text h3">{{ $completedProjects }}</p>
@@ -161,7 +195,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
-            <div class="card-header bg-success text-white">Statistiques Globales</div>
+            <div class="card-header" style="background: linear-gradient(to right, #27ae60, #27ae60); color: white">Statistiques Globales</div>
             <div class="card-body">
                 <p><strong>Budget total :</strong> {{ number_format($totalBudget) }} FCFA</p>
                 <p><strong>Secteur :</strong> {{ $sectorCount }}</p>
@@ -192,8 +226,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">Projets par secteur</h5>
+                    <div class="card-header" style="background: linear-gradient(to right, #27ae60, #27ae60); color: white">
+                        Projets par secteur
                     </div>
                     <div class="card-body">
                         <canvas id="projectsBySectorChart"></canvas>
@@ -207,7 +241,7 @@
         <!-- Section des projets par mois -->
                 <div class="col-md-6">
                     <div class="card">
-            <div class="card-header bg-primary text-white">Projets Créés par Mois</div>
+            <div class="card-header bg-info text-white">Projets Créés par Mois</div>
             <div class="card-body">
                 <canvas id="projectsByMonthChart" width="400" height="200"></canvas>
             </div>
@@ -222,7 +256,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header bg-warning text-white">
+                <div class="card-header" style="background: linear-gradient(to right, #27ae60, #27ae60); color: white">
                     Rapport Mensuel ({{ date('F Y', mktime(0, 0, 0, (int) $selectedMonth, 1, (int) $selectedYear)) }})
                 </div>
 
@@ -234,7 +268,7 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-header bg-danger text-white">Tâches en Retard</div>
+                <div class="card-header" style="background: linear-gradient(to right, #27ae60, #27ae60); color: white">Tâches en Retard</div>
                 <div class="card-body">
                     <h5 class="text-danger">{{ $overdueTasks }}</h5>
                 </div>
@@ -242,8 +276,8 @@
         </div>
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Évolution des projets</h5>
+                <div class="card-header bg-info text-white">
+                    Évolution des projets
                 </div>
                 <div class="card-body">
                     <canvas id="projectsOverTimeChart"></canvas>
@@ -257,8 +291,8 @@
     <div class="row mt-4">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Performance des tâches</h5>
+                <div class="card-header" style="background: linear-gradient(to right, #27ae60, #27ae60); color: white">
+                    Performance des tâches
                 </div>
                 <div class="card-body">
                     <table class="table">
@@ -284,8 +318,8 @@
         </div>
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Sessions de mentorat</h5>
+                <div class="card-header bg-info text-white">
+                    Sessions de mentorat
                 </div>
                 <div class="card-body">
                     <table class="table">

@@ -19,7 +19,6 @@ use App\Http\Controllers\SharedDocumentController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\WorkspaceController;
@@ -43,8 +42,8 @@ require __DIR__.'/auth.php';
 
 // Routes d'inscription
 
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register'])->name('register.auth');
+Route::post('/login', [AuthController::class, 'login'])->name('login.auth');
 
 
 // Routes du tableau de bord pour chaque rôle
@@ -139,8 +138,6 @@ Route::resource('mentorship_sessions', MentorshipSessionController::class)->midd
 
 Route::post('/mentorship_sessions', [MentorshipSessionController::class, 'store'])->name('mentorship_sessions.store');
 
-
-
 // Ressource pour Mentorship Sessions (CRUD)
 Route::resource('mentorship_sessions', MentorshipSessionController::class)->middleware('auth');
 
@@ -164,7 +161,7 @@ Route::get('/resources/{id}/download', [ResourceController::class, 'download'])-
 
 
 
-Route::resource('resources', ResourceController::class)->middleware('auth');
+
 
 Route::middleware(['auth', 'role:admin,coach'])->group(function () {
     Route::get('/resources/create', [ResourceController::class, 'create'])->name('resources.create');
@@ -210,7 +207,7 @@ Route::patch('/notifications/{id}/mark-as-read', [NotificationController::class,
 Route::post('/tasks/{task}/submit', [TaskController::class, 'submitWork'])->name('porteur.tasks.submit');
 
 Route::get('/resources/{filename}', [ResourceController::class, 'show'])->name('resources.show');
-Route::get('resources/download/{id}', [ResourceController::class, 'download'])->name('resources.download');
+
 
 
 
@@ -253,10 +250,11 @@ Route::middleware('web')->group(function () {
 });
 
 
-Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.editt');
+
 Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.updatee');
 Route::get('/profile/view', [UserController::class, 'showProfile'])->name('profile.view');
-
+Route::get('/profile/create', [UserController::class, 'createProfile'])->name('profile.create');
+Route::post('/profiles', [UserController::class, 'storeProfile'])->name('profile.store');
 Route::post('/requests/relation', [RequestController::class, 'sendRelationRequest'])->name('requests.relation');
 
 
@@ -279,8 +277,12 @@ Route::prefix('porteur')->middleware('auth')->group(function () {
 
 Route::get('/reports', [ReportController::class, 'generateReport'])->name('report.generate');
 Route::get('/reports/export', [ReportController::class, 'export'])->name('report.export');
-
-
+// routes/web.php
+Route::post('/reports/send-email', [ReportController::class, 'sendReportEmail'])->name('reports.send.email');
+Route::get('/report/porteur/{porteurId}', [ReportController::class, 'generatePorteurReport'])
+    ->name('report.porteur');
+Route::get('/report/porteur/{porteurId}/export/{format}', [ReportController::class, 'exportPorteurReport'])
+    ->name('report.porteur.export');
 
 
 

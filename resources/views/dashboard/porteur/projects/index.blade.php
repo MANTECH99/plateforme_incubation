@@ -70,7 +70,6 @@
     <i class="fa fa-plus"></i> Créer un Nouveau Projet
 </button>
         <input type="text" class="form-control me-2" placeholder="Rechercher un projet..." style="width: 250px;">&nbsp;&nbsp;
-        <a href="{{ route('report.generate') }}" class="btn btn-md" style="background-color: #27ae60     ; color: white;">Systéme de reporting</a>&nbsp;&nbsp;
     </div><br>
 
 

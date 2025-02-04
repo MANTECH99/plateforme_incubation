@@ -144,6 +144,135 @@
         <td>{{ number_format($taskStats['average_completion_time'], 1) }} jours</td>
     </tr>
 </table>
+<!-- Statistiques Globales -->
+<div class="card">
+    <div class="card-header">
+        <h2>Statistiques Globales</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Budget total :</strong> {{ number_format($totalBudget) }} FCFA</p>
+        <p><strong>Nombre de secteurs :</strong> {{ $sectorCount }}</p>
+        <p><strong>Répartition par statut :</strong></p>
+        <table>
+            <thead>
+            <tr>
+                <th>Statut</th>
+                <th>Nombre de Projets</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($statusCount as $status => $count)
+                <tr>
+                    <td>{{ $status }}</td>
+                    <td>{{ $count }}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Projets par Coach -->
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h2>Projets par Coach</h2>
+    </div>
+    <div class="card-body">
+        <table>
+            <thead>
+            <tr>
+                <th>Coach</th>
+                <th>Nombre de Projets</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($projectsByCoach as $coachId => $data)
+                <tr>
+                    <td>{{ $data['coach_name'] }}</td>
+                    <td>{{ $data['total_projects'] }}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Projets par Secteur -->
+<div class="card">
+    <div class="card-header">
+        <h2>Projets par Secteur</h2>
+    </div>
+    <div class="card-body">
+        <table>
+            <thead>
+            <tr>
+                <th>Secteur</th>
+                <th>Nombre de Projets</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($projectStats['by_sector'] as $sector => $count)
+                <tr>
+                    <td>{{ $sector }}</td>
+                    <td>{{ $count }}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Projets par Mois -->
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h2>Projets Créés par Mois</h2>
+    </div>
+    <div class="card-body">
+        <table>
+            <thead>
+            <tr>
+                <th>Mois</th>
+                <th>Nombre de Projets</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($monthlyProjectsStats as $monthlyStat)
+                <tr>
+                    <td>{{ $monthlyStat->month_name }}</td>
+                    <td>{{ $monthlyStat->count }}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Évolution des Projets -->
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h2>Évolution des Projets</h2>
+    </div>
+    <div class="card-body">
+        <table>
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Nombre de Projets</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($projectStats['over_time'] as $overTimeStat)
+                <tr>
+                    <td>{{ $overTimeStat->date }}</td>
+                    <td>{{ $overTimeStat->total }}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 <footer>
     Généré automatiquement le {{ now()->format('d/m/Y à H:i:s') }}
 </footer>

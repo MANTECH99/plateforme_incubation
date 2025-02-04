@@ -224,11 +224,11 @@
                                                                 <label>Genre</label>
                                                                 <div class="d-flex">
                                                                     <div class="custom-control custom-radio mb-5 mr-20">
-                                                                        <input type="radio" id="customRadio4" name="genre" class="custom-control-input" value="male" {{ $user->genre == 'Homme' ? 'checked' : '' }}>
+                                                                        <input type="radio" id="customRadio4" name="genre" class="custom-control-input" value="Homme" {{ $user->genre == 'Homme' ? 'checked' : '' }}>
                                                                         <label class="custom-control-label weight-400" for="customRadio4">Homme</label>
                                                                     </div>
                                                                     <div class="custom-control custom-radio mb-5">
-                                                                        <input type="radio" id="customRadio5" name="genre" class="custom-control-input" value="female" {{ $user->genre == 'Femme' ? 'checked' : '' }}>
+                                                                        <input type="radio" id="customRadio5" name="genre" class="custom-control-input" value="Femme" {{ $user->genre == 'Femme' ? 'checked' : '' }}>
                                                                         <label class="custom-control-label weight-400" for="customRadio5">Femme</label>
                                                                     </div>
                                                                 </div>
