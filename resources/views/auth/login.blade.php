@@ -1,47 +1,137 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="en">
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <title>Modern Login and Register Page | AsmrProg</title>
+</head>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+<body>
+<div class="logo">
+    <img src="{{ asset('images/logo-d.png') }}" alt="Logo">
+</div>
+<div class="container" id="container">
+    <!-- Register Form -->
+    <div class="form-container sign-up">
+
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+            <h1>Créer un compte</h1>
+            <div class="social-icons">
+                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+            <div class="input-container">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="name" name="name" placeholder="Name" value="{{ old('name') }}" required autofocus autocomplete="name">
+            </div>
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+
+            <div class="input-container">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="email" name="email" placeholder="Email" value="{{ old('email') }}" required autocomplete="username">
+            </div>
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
+            <div class="input-container">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Password" required autocomplete="new-password">
+            </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+            <div class="input-container">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required autocomplete="new-password">
+            </div>
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
 
-        <div class="flex items-center justify-end mt-4">
+            <!-- Role Selection with Radio Buttons -->
+            <div class="select-role">
+                <div class="role-options">
+                    <label class="role-option">
+                        <input type="radio" name="role_id" value="2" required>
+                        <div class="icon"><i class="fa fa-user-tie"></i></div>
+                        <span>Porteur</span>
+                    </label>
+                    <label class="role-option">
+                        <input type="radio" name="role_id" value="3" required>
+                        <div class="icon"><i class="fa fa-chalkboard-teacher"></i></div>
+                        <span>Coach</span>
+                    </label>
+                </div>
+            </div>
+            <x-input-error :messages="$errors->get('role_id')" class="mt-2" />
+
+            <button type="submit">S'INSCRIRE</button>
+        </form>
+    </div>
+
+    <!-- Login Form -->
+    <div class="form-container sign-in">
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <h1>Se connecter</h1>
+            <div class="social-icons">
+                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+            <div class="input-container">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="email" name="email" placeholder="Email" value="{{ old('email') }}" required autocomplete="username">
+            </div>
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+
+            <div class="input-container">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Password" required autocomplete="current-password">
+            </div>
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+
+            <div class="block mt-4">
+                <label for="remember_me" class="inline-flex items-center">
+                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                    <span class="ms-2 text-sm text-gray-600">{{ __('Souviens-toi de moi') }}</span>
+                </label>
+            </div>
+
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
+                <a href="{{ route('password.request') }}">Mot de passe oublié ?</a>
             @endif
+            <button type="submit">SE CONNECTER</button>
+        </form>
+    </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+    <!-- Toggle between Login and Register -->
+    <div class="toggle-container">
+        <div class="toggle">
+            <div class="toggle-panel toggle-left">
+                <div class="logos">
+                    <img src="{{ asset('images/uasz.png') }}" alt="Logo">
+                </div>
+                <h1>Content de te revoir !</h1>
+                <p>Entrez vos informations personnelles pour utiliser toutes les fonctionnalités du site</p>
+                <button class="hidden" id="login">SE CONNECTER</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <div class="logos">
+                    <img src="{{ asset('images/uasz.png') }}" alt="Logo">
+                </div>
+                <h1>Bonjour mon ami !</h1>
+                <p>Inscrivez-vous avec vos données personnelles pour utiliser toutes les fonctionnalités du site</p>
+                <button class="hidden" id="register">S'INSCRIRE</button>
+            </div>
         </div>
-    </form>
-</x-guest-layout>
+    </div>
+</div>
+
+<script src="{{ asset('script.js') }}"></script>
+</body>
+
+</html>

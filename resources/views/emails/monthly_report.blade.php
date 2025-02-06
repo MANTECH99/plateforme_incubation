@@ -1,3 +1,13 @@
-<!-- resources/views/emails/monthly_report.blade.php -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rapport Mensuel</title>
+</head>
+<body>
 <h1>Rapport Mensuel</h1>
-<p>Voici le rapport mensuel en pièce jointe.</p>
+<p>Bonjour,</p>
+<p>Veuillez trouver ci-joint le rapport mensuel au format PDF et Excel.</p>
+<p>Cordialement,</p>
+<p>L'équipe de reporting</p>
+</body>
+</html>

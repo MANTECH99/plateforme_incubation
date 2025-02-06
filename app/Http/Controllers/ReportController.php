@@ -444,7 +444,7 @@ class ReportController extends Controller
             $pdf = PDF::loadView('reports.export_pdf', $data);
             return $pdf->download('rapport_statistiques_' . $month . '_' . $year . '.pdf');
         } elseif ($format === 'excel') {
-            return Excel::download(new ReportExport($data), 'rapport_' . $month . '_' . $year . '.xlsx');
+            return Excel::download(new ReportExport($data, $startDate, $endDate), 'rapport_' . $month . '_' . $year . '.xlsx');
         } else {
             return redirect()->back()->with('error', 'Format non pris en charge.');
         }
@@ -521,9 +521,23 @@ class ReportController extends Controller
                 $item->month_name = date('F', mktime(0, 0, 0, $item->month, 1));
                 return $item;
             });
+        $statusCount = $projects->groupBy('status')->map->count();
+        $projectStats = $this->getProjectStats($startDate);
+        $monthlyProjectsStats = Project::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->map(function ($item) {
+                $item->month_name = date('F', mktime(0, 0, 0, $item->month, 1));
+                return $item;
+            });
 
         // Préparer les données pour la vue
         $data = [
+            'monthlyProjectsStats' => $monthlyProjectsStats, // ✅ Ajout ici
+            'statusCount' => $statusCount,
+            'projectStats' => $projectStats,
             'month' => $month,
             'year' => $year,
             'projects' => $projects,
@@ -548,6 +562,10 @@ class ReportController extends Controller
         $pdfPath = storage_path('app/public/rapport_mensuel.pdf');
         $pdf->save($pdfPath);
 
+        // Générer le fichier Excel
+        $excelPath = storage_path('app/public/rapport_mensuel.xlsx');
+        Excel::store(new ReportExport($data, $startDate, $endDate), 'rapport_mensuel.xlsx', 'public');
+
         // Récupérer les administrateurs en fonction de leur rôle
         $admins = User::whereHas('role', function ($query) {
             $query->where('name', 'admin'); // Assurez-vous que 'name' est le champ correct dans la table `roles`
@@ -555,7 +573,7 @@ class ReportController extends Controller
 
         // Envoyer l'e-mail aux administrateurs
         foreach ($admins as $admin) {
-            Mail::to($admin->email)->send(new MonthlyReportMail($data));
+            Mail::to($admin->email)->send(new MonthlyReportMail($data,$pdfPath, $excelPath));
         }
 
         return redirect()->back()->with('success', 'Rapport envoyé par e-mail avec succès.');

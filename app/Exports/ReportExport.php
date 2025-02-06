@@ -2,16 +2,61 @@
 
 namespace App\Exports;
 
+use App\Models\MentorshipSession;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromArray;
 
 class ReportExport implements FromArray
 {
     protected $data;
+    protected $startDate;
+    protected $endDate;
 
-    public function __construct(array $data)
+    public function __construct(array $data, $startDate, $endDate)
     {
         $this->data = $data;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+
+        // Ajouter les stats de mentorat
+        $this->data['mentorshipStats'] = $this->getMentorshipStats($startDate, $endDate);
+
+        // Ajouter 'totalSessions' pour l'export
+        $this->data['totalSessions'] = $this->data['mentorshipStats']['total'];
     }
+
+    private function getMentorshipStats($startDate, $endDate)
+    {
+
+
+        $totalSessions = MentorshipSession::whereBetween('start_time', [$startDate, $endDate])->count();
+
+        $sessionsByMonth = MentorshipSession::whereBetween('start_time', [$startDate, $endDate])
+            ->select(DB::raw('MONTH(start_time) as month'), DB::raw('count(*) as total'))
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        $averageDuration = MentorshipSession::whereBetween('start_time', [$startDate, $endDate])
+            ->select(DB::raw('AVG(TIMESTAMPDIFF(MINUTE, start_time, end_time)) as avg_duration'))
+            ->first()
+            ->avg_duration;
+
+        $sessionsByCoach = MentorshipSession::whereBetween('start_time', [$startDate, $endDate])
+            ->with('coach')
+            ->select('coach_id', DB::raw('count(*) as total'))
+            ->groupBy('coach_id')
+            ->get();
+
+        return [
+            'total' => $totalSessions,
+            'by_month' => $sessionsByMonth,
+            'average_duration' => $averageDuration,
+            'by_coach' => $sessionsByCoach
+        ];
+    }
+
+
 
     public function array(): array
     {
@@ -39,7 +84,7 @@ class ReportExport implements FromArray
                 $this->data['completedTasks'],
                 $this->data['overdueTasks'],
                 $this->data['totalMentorshipSessions'],
-                $this->data['sessionsThisMonth']
+                $this->data['totalSessions']
             ];
         }, $this->data['projects']->toArray());
 
