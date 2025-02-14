@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Models\Role;
 use App\Models\Task;
 use App\Models\User;
+use App\Notifications\ImportantAlertNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -810,12 +811,12 @@ class ReportController extends Controller
         // Exporter en PDF
         if ($format === 'pdf') {
             $pdf = Pdf::loadView('reports.export_porteur_pdf', $data);
-            return $pdf->download('rapport_porteur_' . $porteur->id . '.pdf');
+            return $pdf->download('rapport_statistique_de_' . $porteur->name . '.pdf');
         }
 
         // Exporter en Excel
         if ($format === 'excel') {
-            return Excel::download(new PorteurReportExport($data), 'rapport_porteur_' . $porteur->id . '.xlsx');
+            return Excel::download(new PorteurReportExport($data), 'rapport_statistique_de_' . $porteur->name . '.xlsx');
         }
 
         return redirect()->back()->with('error', 'Format non pris en charge.');

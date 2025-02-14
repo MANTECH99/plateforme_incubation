@@ -3,6 +3,7 @@
 @section('title', 'Rapport du Porteur de Projet')
 
 @section('content')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>#statusChart {
             max-height: 310px !important; /* Réduire la hauteur */
         }
@@ -70,17 +71,51 @@
 
 
         <div class="container-fluid p-0 m-0" style="min-height: 100vh;">
-        <h1 class="mb-4">Rapport Statistique pour {{ $porteur->name }}</h1>
-        <div class="mb-4">
-            <a href="{{ route('report.porteur.export', ['porteurId' => $porteur->id, 'format' => 'pdf']) }}"
-               class="btn btn-danger">
-                <i class="fas fa-file-pdf"></i> Exporter en PDF
-            </a>
-            <a href="{{ route('report.porteur.export', ['porteurId' => $porteur->id, 'format' => 'excel']) }}"
-               class="btn btn-success">
-                <i class="fas fa-file-excel"></i> Exporter en Excel
-            </a>
-        </div>
+        <h1 class="mb-4 text-center" >Rapport Statistique pour {{ $porteur->name }}</h1>
+
+            <div class="mb-4 d-flex align-items-center">
+                <!-- Bouton Exporter en PDF (rouge Adobe) -->
+                <a href="{{ route('report.porteur.export', ['porteurId' => $porteur->id, 'format' => 'pdf']) }}"
+                   class="btn me-2"
+                   style="background-color: #FF0000; color: white;">
+                    <i class="fas fa-file-pdf fa-lg"></i>&nbsp; Exporter en PDF
+                </a>&nbsp;&nbsp;
+
+                <!-- Bouton Exporter en Excel (vert Excel) -->
+                <a href="{{ route('report.porteur.export', ['porteurId' => $porteur->id, 'format' => 'excel']) }}"
+                   class="btn me-2"
+                   style="background-color: #217346; color: white;">
+                    <i class="fas fa-file-excel fa-lg"></i>&nbsp; Exporter en Excel
+                </a>&nbsp;&nbsp;
+
+                <!-- Bouton Envoyer par e-mail (bleu Outlook) -->
+                <form action="{{ route('reports.send.email') }}" method="POST" style="display: inline;">
+                    @csrf
+                    <input type="hidden" name="period" value="{{ request('period') }}">
+                    <button type="submit" class="btn me-2" style="background-color: #0072C6; color: white;">
+                        <i class="fas fa-envelope fa-lg"></i>&nbsp; Envoyer le rapport généré par e-mail
+                    </button>
+                </form>&nbsp;&nbsp;
+
+
+                <div class="input-group" style="width: 300px;">
+        <span class="input-group-text" style="background-color: #27ae60; color: white;">
+            <i class="fas fa-user"></i>
+        </span>&nbsp;
+                    <select id="porteurSelect" class="form-select" onchange="window.location.href = this.value;" style="border-radius: 10px; padding-left: 5px;">
+                        <option value="">-- Choisir un porteur de projet --</option>
+                        @foreach($porteurs as $porteur)
+                            <option value="{{ route('report.porteur', $porteur->id) }}">
+                                {{ $porteur->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+
+
+
         <!-- Statistiques globales -->
         <div class="row mb-4">
             <div class="col-md-4">
