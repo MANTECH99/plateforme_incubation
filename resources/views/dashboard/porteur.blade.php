@@ -159,17 +159,19 @@
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['En attente', 'Soumis', 'Non accompli'],
+        labels: ['En attente', 'En cours', 'Accompli', 'Non accompli'],
         datasets: [{
           label: 'Nombre de tâches',
-          data: [taskStats.en_attente, taskStats.soumis, taskStats.non_accompli],
+          data: [taskStats.en_attente, taskStats.en_cours, taskStats.soumis, taskStats.non_accompli],
           backgroundColor: [
             'rgba(255, 193, 7, 0.3)',  // Jaune clair
+            'rgba(0, 123, 255, 0.8)',  // bleu
             'rgba(40, 167, 69, 0.3)',  // Vert clair
             'rgba(220, 53, 69, 0.3)'   // Rouge clair
           ],
           borderColor: [
-            'rgba(255, 193, 7, 1)', 
+            'rgba(255, 193, 7, 1)',
+            'rgba(0, 123, 255, 0.8)', 
             'rgba(40, 167, 69, 1)', 
             'rgba(220, 53, 69, 1)' 
           ],

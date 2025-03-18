@@ -73,12 +73,12 @@
             <!-- Messagerie est accessible à tous les rôles -->
             <li class="nav-item">
                     <a class="nav-link {{ Request::routeIs('resources.index') ? 'active' : '' }}" href="{{ route('resources.index') }}" >
-                    <i class="mdi mdi-file-document mdi-18px"></i>&nbsp;&nbsp;Centre de ressources
+                    <i class="mdi mdi-file-document mdi-18px"></i>&nbsp;&nbsp;<span class="menu-title">Centre de ressources</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ Request::routeIs('documents.index') ? 'active' : '' }}" href="{{ route('documents.index') }}">
-                    <i class="mdi mdi-folder-outline mdi-18px"></i>&nbsp;&nbsp;Documents partagés
+                    <i class="mdi mdi-folder-outline mdi-18px"></i>&nbsp;&nbsp;<span class="menu-title">Documents partagés</span>
                     </a>
                 </li>
                 <li class="nav-item">

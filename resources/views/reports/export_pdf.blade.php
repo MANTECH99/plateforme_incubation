@@ -29,23 +29,24 @@
         th {
             background-color: #f4f4f4;
         }
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <h1>Rapport Statistique</h1>
 
-<p><strong>Mois :</strong> {{ $month }}</p>
-<p><strong>Année :</strong> {{ $year }}</p>
+<p>Ce rapport présente une analyse détaillée des projets et des activités pour le mois de <strong>{{ $month }}</strong> de l'année <strong>{{ $year }}</strong>. Il offre un aperçu global des performances, des réalisations et des défis rencontrés au cours de cette période.</p>
 
 <h2>Statistiques Globales</h2>
-<p><strong>Total des projets :</strong> {{ $totalProjects }}</p>
-<p><strong>Projets Terminés :</strong> {{ $completedProjects }}</p>
-<p><strong>Projets En Cours :</strong> {{ $ongoingProjects }}</p>
-<p><strong>Projets à Venir :</strong> {{ $upcomingProjects }}</p>
-<p><strong>Budget total :</strong> {{ number_format($totalBudget) }} FCFA</p>
-<p><strong>Secteur :</strong> {{ $sectorCount }}</p>
+<p>Au cours de cette période, un total de <strong>{{ $totalProjects }}</strong> projets ont été recensés. Parmi ceux-ci, <strong>{{ $completedProjects }}</strong> ont été achevés avec succès, tandis que <strong>{{ $ongoingProjects }}</strong> sont encore en cours de réalisation. En outre, <strong>{{ $upcomingProjects }}</strong> projets sont prévus pour les prochains mois. Le budget total alloué à ces projets s'élève à <strong>{{ number_format($totalBudget) }} FCFA</strong>, répartis sur <strong>{{ $sectorCount }}</strong> secteurs d'activité.</p>
 
 <h2>Détails des Projets</h2>
+<p>Les projets enregistrés couvrent une variété de secteurs et présentent des statuts divers. Voici un aperçu des projets :</p>
 <table>
     <thead>
     <tr>
@@ -55,7 +56,7 @@
         <th>Statut</th>
         <th>Date de Création</th>
         <th>Nombre de Tâches</th>
-        <th>coach</th>
+        <th>Coach</th>
     </tr>
     </thead>
     <tbody>
@@ -74,44 +75,21 @@
 </table>
 
 <h2>Projets par Coach</h2>
+<p>La répartition des projets entre les coaches montre une implication variée. Voici un résumé :</p>
 <ul>
     @foreach($projectsByCoach as $coach)
-        <li>{{ $coach['coach_name'] }} : {{ $coach['total_projects'] }} projets</li>
+        <li>{{ $coach['coach_name'] }} a supervisé <strong>{{ $coach['total_projects'] }}</strong> projets.</li>
     @endforeach
 </ul>
 
 <h2>Tâches</h2>
-<table>
-    <tr>
-        <td><strong>Total des Tâches :</strong></td>
-        <td>{{ $totalTasks }}</td>
-    </tr>
-    <tr>
-        <td><strong>Tâches Soumises :</strong></td>
-        <td>{{ $completedTasks }}</td>
-    </tr>
-    <tr>
-        <td><strong>Tâches en Retard :</strong></td>
-        <td>{{ $overdueTasks }}</td>
-    </tr>
-</table>
+<p>En ce qui concerne les tâches, un total de <strong>{{ $totalTasks }}</strong> ont été enregistrées. Parmi celles-ci, <strong>{{ $completedTasks }}</strong> ont été soumises avec succès, tandis que <strong>{{ $overdueTasks }}</strong> sont en retard. Ces chiffres reflètent l'efficacité globale de la gestion des tâches.</p>
 
 <h2>Sessions de Mentorat</h2>
-<table>
-    <tr>
-        <td><strong>Total des Séances de Mentorat :</strong></td>
-        <td>{{ $totalMentorshipSessions }}</td>
-    </tr>
-    <tr>
-        <td><strong>Sessions Ce Mois-ci :</strong></td>
-        <td>{{ $mentorshipStats['total'] }}</td>
-    </tr>
-    <tr>
-    <th>Durée moyenne</th>
-    <td>{{ number_format($mentorshipStats['average_duration'], 0) }} minutes</td>
-    </tr>
-</table>
+<p>Les sessions de mentorat ont également été une partie importante des activités ce mois-ci. Un total de <strong>{{ $totalMentorshipSessions }}</strong> sessions ont été organisées, dont <strong>{{ $mentorshipStats['total'] }}</strong> ce mois-ci. La durée moyenne d'une session était de <strong>{{ number_format($mentorshipStats['average_duration'], 0) }} minutes</strong>.</p>
+
 <h2>Répartition Mensuelle des Projets</h2>
+<p>La répartition des projets par mois montre une évolution intéressante :</p>
 <table>
     <thead>
     <tr>
@@ -130,104 +108,48 @@
 </table>
 
 <h2>Performance des Tâches</h2>
+<p>La performance des tâches est un indicateur clé de l'efficacité opérationnelle. Ce mois-ci, le taux de complétion des tâches était de <strong>{{ number_format($taskStats['completion_rate'], 1) }}%</strong>, avec un temps moyen de complétion de <strong>{{ number_format($taskStats['average_completion_time'], 1) }} jours</strong>.</p>
+
+<h2>Statistiques Globales</h2>
+<p>Le budget total alloué aux projets s'élève à <strong>{{ number_format($totalBudget) }} FCFA</strong>, répartis sur <strong>{{ $sectorCount }}</strong> secteurs. La répartition des projets par statut est la suivante :</p>
 <table>
+    <thead>
     <tr>
-        <th>Total des tâches</th>
-        <td>{{ $taskStats['total'] }}</td>
+        <th>Statut</th>
+        <th>Nombre de Projets</th>
     </tr>
-    <tr>
-        <th>Taux de complétion</th>
-        <td>{{ number_format($taskStats['completion_rate'], 1) }}%</td>
-    </tr>
-    <tr>
-        <th>Temps moyen de complétion</th>
-        <td>{{ number_format($taskStats['average_completion_time'], 1) }} jours</td>
-    </tr>
+    </thead>
+    <tbody>
+    @foreach($statusCount as $status => $count)
+        <tr>
+            <td>{{ $status }}</td>
+            <td>{{ $count }}</td>
+        </tr>
+    @endforeach
+    </tbody>
 </table>
-<!-- Statistiques Globales -->
-<div class="card">
-    <div class="card-header">
-        <h2>Statistiques Globales</h2>
-    </div>
-    <div class="card-body">
-        <p><strong>Budget total :</strong> {{ number_format($totalBudget) }} FCFA</p>
-        <p><strong>Nombre de secteurs :</strong> {{ $sectorCount }}</p>
-        <p><strong>Répartition par statut :</strong></p>
-        <table>
-            <thead>
-            <tr>
-                <th>Statut</th>
-                <th>Nombre de Projets</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($statusCount as $status => $count)
-                <tr>
-                    <td>{{ $status }}</td>
-                    <td>{{ $count }}</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
 
-<!-- Projets par Coach -->
-<div class="card">
-    <div class="card-header bg-info text-white">
-        <h2>Projets par Coach</h2>
-    </div>
-    <div class="card-body">
-        <table>
-            <thead>
-            <tr>
-                <th>Coach</th>
-                <th>Nombre de Projets</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($projectsByCoach as $coachId => $data)
-                <tr>
-                    <td>{{ $data['coach_name'] }}</td>
-                    <td>{{ $data['total_projects'] }}</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
+<h2>Projets par Secteur</h2>
+<p>Les projets sont répartis dans différents secteurs d'activité. Voici un aperçu :</p>
+<table>
+    <thead>
+    <tr>
+        <th>Secteur</th>
+        <th>Nombre de Projets</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach($projectStats['by_sector'] as $sector => $count)
+        <tr>
+            <td>{{ $sector }}</td>
+            <td>{{ $count }}</td>
+        </tr>
+    @endforeach
+    </tbody>
+</table>
 
-<!-- Projets par Secteur -->
-<div class="card">
-    <div class="card-header">
-        <h2>Projets par Secteur</h2>
-    </div>
-    <div class="card-body">
-        <table>
-            <thead>
-            <tr>
-                <th>Secteur</th>
-                <th>Nombre de Projets</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($projectStats['by_sector'] as $sector => $count)
-                <tr>
-                    <td>{{ $sector }}</td>
-                    <td>{{ $count }}</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- Projets par Mois -->
-<div class="card">
-    <div class="card-header bg-info text-white">
-        <h2>Projets Créés par Mois</h2>
-    </div>
-    <div class="card-body">
+<h2>Projets Créés par Mois</h2>
+<p>Les projets sont répartis dans différents mois. Voici un aperçu :</p>
         <table>
             <thead>
             <tr>
@@ -244,37 +166,31 @@
             @endforeach
             </tbody>
         </table>
-    </div>
-</div>
 
-<!-- Évolution des Projets -->
-<div class="card">
-    <div class="card-header bg-info text-white">
-        <h2>Évolution des Projets</h2>
-    </div>
-    <div class="card-body">
-        <table>
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>Nombre de Projets</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($projectStats['over_time'] as $overTimeStat)
-                <tr>
-                    <td>{{ $overTimeStat->date }}</td>
-                    <td>{{ $overTimeStat->total }}</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
 
+
+
+<h2>Évolution des Projets</h2>
+<p>L'évolution des projets au fil du temps montre une dynamique intéressante :</p>
+<table>
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Nombre de Projets</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach($projectStats['over_time'] as $overTimeStat)
+        <tr>
+            <td>{{ $overTimeStat->date }}</td>
+            <td>{{ $overTimeStat->total }}</td>
+        </tr>
+    @endforeach
+    </tbody>
+</table>
 
 <footer>
-    Généré automatiquement le {{ now()->format('d/m/Y à H:i:s') }}
+    Ce rapport a été généré automatiquement le {{ now()->format('d/m/Y à H:i:s') }}.
 </footer>
 </body>
 </html>

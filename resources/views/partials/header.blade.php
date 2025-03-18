@@ -97,10 +97,10 @@
 
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo mr-5" href="{{ route('dashboard') }}">
+        <a class="navbar-brand brand-logo mr-5 {{ Request::routeIs(auth()->user()->role->name . '.dashboard') ? 'active' : '' }}" href="{{ route(auth()->user()->role->name . '.dashboard') }}" >
             <img src="{{ asset('images/logo-text.png') }}" class="mr-2" alt="logo" />
         </a>
-        <a class="navbar-brand brand-logo-mini" href="{{ route('dashboard') }}">
+        <a class="navbar-brand brand-logo-mini {{ Request::routeIs(auth()->user()->role->name . '.dashboard') ? 'active' : '' }}" href="{{ route(auth()->user()->role->name . '.dashboard') }}" >
             <img src="{{ asset('images/logo-text.png') }}" alt="logo" />
         </a>
     </div>
@@ -122,7 +122,7 @@
                     <i class="icon-bell mx-0"></i>
                     <span id="notification-count" class="badge badge-pill badge-success">{{ $unreadNotificationsCount }}</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">&nbsp &nbsp &nbsp
                 <span class="font-weight-bold">Nouvelles Notifications</span> <span class="badge badge-pill badge-success">{{ $unreadNotificationsCount }}</span>
                     <div class="dropdown-content-body">
                         <ul>

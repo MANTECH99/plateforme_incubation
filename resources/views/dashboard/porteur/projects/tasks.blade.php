@@ -30,6 +30,68 @@
     font-weight: bold;
 }
 
+.task-box {
+        background-color: rgba(39, 174, 96, 0.1);
+        border: 1px solid #27ae60;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .task-box:hover {
+        background-color: rgba(39, 174, 96, 0.2);
+    }
+    .task-cards {
+        display: none;
+    }
+    .task-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 10px 0;
+        background-color: #fff;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .status-box {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #000; /* Texte en noir */
+    margin-bottom: 20px;
+    transition: 0.3s;
+    background: rgba(255, 255, 255, 0.6); /* Blanc avec 60% d'opacité */
+    border: 2px solid transparent; /* Bordure par défaut */
+    backdrop-filter: blur(5px); /* Effet de flou pour un meilleur rendu */
+}
+
+/* Couleurs semi-transparentes pour chaque statut */
+.pending { background: rgba(255, 193, 7, 0.3); border-color: rgba(255, 193, 7, 0.8); }  /* Jaune - En attente */
+.in-progress { background: rgba(0, 123, 255, 0.3); border-color: rgba(0, 123, 255, 0.8); } /* Bleu - En cours */
+.completed { background: rgba(40, 167, 69, 0.3); border-color: rgba(40, 167, 69, 0.8); } /* Vert - Accompli */
+.not-completed { background: rgba(220, 53, 69, 0.3); border-color: rgba(220, 53, 69, 0.8); } /* Rouge - Non accompli */
+
+/* Style du bouton "Ouvrir" */
+.status-box button {
+    background: rgba(40, 167, 69, 0.9); /* Vert */
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.status-box button:hover {
+    background: rgba(40, 167, 69, 1); /* Vert plus foncé au survol */
+}
+
+
+
+
 </style>
 <div class="container">
     <div class="horizontal-sidebar">
@@ -63,120 +125,89 @@
 
     <div class="container-fluid p-0 w-100" id="container-wrapper">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Tâches Associées au Projet : <span class="text-primary">{{ $project->title }}</span></h1>
+                            <h1 class="h3 mb-0 text-gray-800" 
+                    style="background-color: rgba(39, 174, 96, 0.1); 
+                        color: #606060 ; 
+                        border: 1px solid #27ae60; 
+                        padding: 10px 15px; 
+                        border-radius: 5px; 
+                        display: inline-block; 
+                        margin: 0 auto; 
+                        text-align: center; 
+                        width: 100%;">
+                Tâches Associées au Projet : <span class="text-primary">{{ $project->title }}</span>
+                </h1>
         </div>
 
-        @if($tasks->count() > 0)
-            <div class="row">
-                <div class="col-lg-12 mb-4">
-                    <div class="card shadow">
-                        <div class="table-responsive">
-                            <table class="table align-items-center table-bordered">
-                                <thead  style="background-color: #2ecc71; color: white;">
-                                    <tr>
-                                        <th style="border: 1px solid #2ecc71;">Titre</th>
-                                        <th style="border: 1px solid #2ecc71;">Description</th>
-                                        <th style="border: 1px solid #2ecc71;">Travail à faire</th>
-                                        <th style="border: 1px solid #2ecc71;">Deadline</th>
-                                        <th style="border: 1px solid #2ecc71;">Status</th>
-                                        <th style="border: 1px solid #2ecc71;">Progression</th>
-                                        <th style="border: 1px solid #2ecc71;">Soumission du travail</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($tasks as $task)
-                                        <tr>
-                                            <td>{{ $task->title }}</td>
-                                            <td>{{ $task->description }}</td>
-                                            <td>
-                @if ($task->to_do_file)
-                    <a href="{{ Storage::url($task->to_do_file) }}" target="_blank" class="btn btn-sm btn-primary">Voir le fichier</a>
-                    <a href="{{ Storage::url($task->to_do_file) }}" download class="btn btn-sm btn-success">Télécharger</a>
-                @else
-                    <span class="text-muted">Aucun fichier fourni</span>
-                @endif
-            </td>
-                                            <td>{{ $task->due_date ? $task->due_date->format('d/m/Y') : 'Non définie' }}</td>
-                                            <td>
-                                            @if ($task->due_date && now()->greaterThan($task->due_date) && $task->status != 'soumis')
-        @php
-            $task->status = 'non accompli'; // Met à jour localement pour refléter le statut
-        @endphp
-    @endif
-    @if ($task->status == 'soumis')
-        <span class="badge badge-success">Soumis</span>
-    @elseif ($task->status == 'non accompli')
-        <span class="badge badge-danger">Non accompli</span>
-    @elseif ($task->status == 'en cours')
-        <span class="badge badge-primary">En cours</span>
-    @else
-        <span class="badge badge-warning">{{ ucfirst($task->status) }}</span>
-    @endif
-</td>
 
-<td>
-<!-- Barre de progression -->
-<div class="progress mt-2" style="height: 20px; background-color: #f3f3f3; border-radius: 10px; overflow: hidden;">
-    <div 
-        class="progress-bar progress-bar-striped progress-bar-animated 
-            @if ($task->status == 'soumis') 
-                bg-success 
-            @elseif ($task->status == 'non accompli') 
-                bg-danger 
-            @else 
-                bg-info 
-            @endif" 
-        role="progressbar" 
-        style="width: {{ $task->status == 'soumis' ? 100 : $task->progress }}%;" 
-        aria-valuenow="{{ $task->status == 'soumis' ? 100 : $task->progress }}" 
-        aria-valuemin="0" 
-        aria-valuemax="100">
-        {{ $task->status == 'soumis' ? 100 : $task->progress }}%
+        <div class="row"> 
+    <div class="col-md-3">
+        <div class="status-box pending">
+            <i class="fas fa-clock"></i>
+            <h3>En attente</h3>
+            <button onclick="showTasks('pending')">Ouvrir</button>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="status-box in-progress">
+            <i class="fas fa-spinner"></i>
+            <h3>En cours</h3>
+            <button onclick="showTasks('in_progress')">Ouvrir</button>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="status-box completed">
+            <i class="fas fa-check-circle"></i>
+            <h3>Accompli</h3>
+            <button onclick="showTasks('completed')">Ouvrir</button>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="status-box not-completed">
+            <i class="fas fa-times-circle"></i>
+            <h3>Non accompli</h3>
+            <button onclick="showTasks('not_completed')">Ouvrir</button>
+        </div>
     </div>
 </div>
 
-</td>
 
-    <td>
-    @if ($task->submission)
-        <!-- Lien pour voir ou télécharger le fichier -->
-        <a href="{{ Storage::url($task->submission) }}" target="_blank" class="btn btn-sm btn-primary">
-            Voir le fichier
-        </a>
-        <a href="{{ Storage::url($task->submission) }}" download class="btn btn-sm btn-success">
-            Télécharger
-        </a>
-    @elseif ($task->due_date && now()->greaterThan($task->due_date))
-        <!-- Message si la date d'échéance est dépassée -->
-        <span class="btn btn-sm btn-danger">Echéance dépassée</span>
-    @else
-        <!-- Formulaire pour soumettre le travail -->
-        <form method="POST" action="{{ route('porteur.tasks.submit', $task->id) }}" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <input type="file" name="submission" class="form-control mb-2" required>
+    <div id="task-container" class="mt-4">
+        <div id="pending" class="task-cards">
+        <div class="row">
+            @foreach ($tasks->where('status', 'en attente') as $task)
+                @include('partials.task_card', ['task' => $task])
+            @endforeach
             </div>
-            <button type="submit" class="btn btn-sm btn-success">Soumettre</button>
-        </form>
-    @endif
-</td>
-
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="card-footer text-center">
-                            <p class="mb-0">Total des tâches : <span class="font-weight-bold">{{ $tasks->count() }}</span></p>
-                        </div>
-                    </div>
-                </div>
+        </div>
+        <div id="in_progress" class="task-cards">
+        <div class="row">
+            @foreach ($tasks->where('status', 'en cours') as $task)
+                @include('partials.task_card', ['task' => $task])
+            @endforeach
             </div>
-        @else
-            <div class="alert alert-info text-center">
-                Aucune tâche n'est disponible pour ce projet pour le moment.
+        </div>
+        <div id="completed" class="task-cards" >
+        <div class="row">
+            @foreach ($tasks->where('status', 'soumis') as $task)
+                @include('partials.task_card', ['task' => $task])
+            @endforeach
             </div>
-        @endif
+        </div>
+        <div id="not_completed" class="task-cards">
+        <div class="row">
+            @foreach ($tasks->where('status', 'non accompli') as $task)
+                @include('partials.task_card', ['task' => $task])
+            @endforeach
+            </div>
+        </div>
     </div>
 </div>
+</div>
+<script>
+    function showTasks(status) {
+        document.querySelectorAll('.task-cards').forEach(el => el.style.display = 'none');
+        document.getElementById(status).style.display = 'block';
+    }
+</script>
 @endsection

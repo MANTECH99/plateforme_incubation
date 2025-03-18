@@ -31,6 +31,7 @@ class DashboardController extends Controller
         // Calcul des statistiques des tâches du projet sélectionné
         $taskStats = [
             'en_attente' => $tasks->where('status', 'en attente')->count(),
+            'en_cours' => $tasks->where('status', 'en cours')->count(),
             'soumis' => $tasks->where('status', 'soumis')->count(),
             'non_accompli' => $tasks->where('status', 'non accompli')->count(),
         ];
@@ -52,6 +53,7 @@ class DashboardController extends Controller
 
         $taskStats = [
             'en_attente' => $tasks->where('status', 'en attente')->count(),
+            'en_cours' => $tasks->where('status', 'en cours')->count(),
             'soumis' => $tasks->where('status', 'soumis')->count(),
             'non_accompli' => $tasks->where('status', 'non accompli')->count(),
         ];

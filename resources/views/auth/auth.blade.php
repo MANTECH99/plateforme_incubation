@@ -123,7 +123,7 @@
                 <div class="logos">
                     <img src="{{ asset('images/uasz.png') }}" alt="Logo">
                 </div>
-                <h1>Bonjour mon ami !</h1>
+                <h1>Cher Utilisateur !</h1>
                 <p>Inscrivez-vous avec vos données personnelles pour utiliser toutes les fonctionnalités du site</p>
                 <button class="hidden" id="register">S'INSCRIRE</button>
             </div>

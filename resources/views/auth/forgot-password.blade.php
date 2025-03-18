@@ -1,25 +1,58 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <title>Modern Login and Register Page | AsmrProg</title>
+</head>
+
+<body>
+<div class="logo">
+    <img src="{{ asset('images/logo-d.png') }}" alt="Logo">
+</div>
+<div class="container" id="container">
+
+    <!-- Login Form -->
+    <div class="form-container sign-in">
+    <form method="POST" action="{{ route('password.email') }}">
+            @csrf
+            <h1>Réinitialisation du mot de passe</h1><br>
+            <div class="social-icons">
+                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div><br>
+            <div class="input-container">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="email" name="email" placeholder="Email" value="{{ old('email') }}" required autocomplete="username">
+            </div>
+            <x-input-error :messages="$errors->get('email')" class="mt-2" /><br>
+            <button type="submit">Envoyer le lien</button>
+        </form>
     </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <!-- Toggle between Login and Register -->
+    <div class="toggle-container">
+        <div class="toggle">
+            <div class="toggle-panel toggle-right">
+                <div class="logos">
+                    <img src="{{ asset('images/uasz.png') }}" alt="Logo">
+                </div>
+                <h1>Cher Utilisateur !</h1>
+                <p>Entrez votre adresse e-mail et nous vous enverrons un lien de réinitialisation.</p>
+            </div>
         </div>
+    </div>
+</div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+<script src="{{ asset('script.js') }}"></script>
+</body>
+
+</html>
+

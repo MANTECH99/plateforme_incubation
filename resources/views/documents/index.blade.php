@@ -90,8 +90,21 @@
 <div class="container mt-4">
     <!-- Section des Dossiers -->
     <div class="row">
-        <h2 class="text-center mb-4">Documents Partagés</h2>
-
+    <!-- Titre principal -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800" 
+    style="background-color: rgba(39, 174, 96, 0.1); 
+           color: #606060 ; 
+           border: 1px solid #27ae60; 
+           padding: 10px 15px; 
+           border-radius: 5px; 
+           display: inline-block; 
+           margin: 0 auto; 
+           text-align: center; 
+           width: 100%;">
+    Documents Partagés
+</h1>
+    </div>
         <!-- Dossier: Documents Reçus -->
         <div class="col-md-6">
             <div class="card shadow">

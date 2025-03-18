@@ -5,10 +5,11 @@
 @section('content')
 <!-- CSS inclus -->
 <link rel="stylesheet" href="{{ asset('css/feather.css') }}">
-<link rel="stylesheet" href="{{ asset('css/app-light.css.css') }}" id="lightTheme">
+<link rel="stylesheet" href="{{ asset('css/app-light.css') }}" id="lightTheme">
 
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+
 @if(auth()->user()->role->name == 'admin')
 <!-- Bouton pour ajouter une ressource -->
 <!-- Bouton pour ouvrir le modal -->
@@ -23,8 +24,21 @@
 <div class="container mt-4">
     <!-- Section des Dossiers -->
     <div class="row">
-        <h2 class="text-center mb-4">Centre de Ressources</h2>
-
+    <!-- Titre principal -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800" 
+    style="background-color: rgba(39, 174, 96, 0.1); 
+           color: #606060 ; 
+           border: 1px solid #27ae60; 
+           padding: 10px 15px; 
+           border-radius: 5px; 
+           display: inline-block; 
+           margin: 0 auto; 
+           text-align: center; 
+           width: 100%;">
+    Centre de Ressources
+</h1>
+    </div>
         <!-- Dossier: Documents & Bibliothèque -->
         <div class="col-md-4">
             <div class="card shadow">

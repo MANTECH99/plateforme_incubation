@@ -1,36 +1,79 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="width: 100%; margin: 0; padding: 0;">
-    <h3 class="mb-4">Toutes les vidéos</h3>
-    
-    <!-- Conteneur des vidéos -->
-    <div class="row g-3">
-        @foreach ($videos as $video)
-            <div class="col-md-4 col-sm-6">
-                <div class="card h-100">
+    <div class="container-fluid p-4">
+        <h3 class="mb-4">Toutes les vidéos</h3>
+
+        <!-- Conteneur des vidéos -->
+        <div class="video-grid">
+            @foreach ($videos as $video)
+                <div class="video-card">
                     <!-- Miniature de la vidéo -->
                     <a href="{{ route('videos.show', $video->id) }}">
-                        <img src="{{ Storage::url($video->thumbnail) }}" 
-                             class="card-img-top" 
-                             alt="{{ $video->title }}" 
-                             style="height: 180px; width: 100%; object-fit: contain; background-color: #f8f9fa;">
+                        <img src="{{ Storage::url($video->thumbnail) }}"
+                             class="video-thumbnail"
+                             alt="{{ $video->title }}">
                     </a>
                     <!-- Détails de la vidéo -->
-                    <div class="card-body d-flex flex-column">
-                        <h6 class="card-title mb-2">
+                    <div class="video-details">
+                        <h6 class="video-title">
                             <a href="{{ route('videos.show', $video->id) }}" class="text-dark text-decoration-none">
                                 {{ Str::limit($video->title, 50) }}
                             </a>
                         </h6>
-                        <p class="card-text text-muted mb-2" style="font-size: 0.9rem;">
+                        <p class="video-description text-muted">
                             {{ Str::limit($video->description, 80) }}
                         </p>
-                        <small class="text-muted mt-auto">{{ $video->published_at }}</small>
+                        <small class="text-muted">{{ $video->published_at }}</small>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
     </div>
-</div>
 @endsection
+
+<style>
+    .video-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .video-card {
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+    .video-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .video-thumbnail {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        background-color: #f8f9fa;
+    }
+
+    .video-details {
+        padding: 12px;
+    }
+
+    .video-title {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    .video-description {
+        font-size: 0.875rem;
+        margin-bottom: 8px;
+    }
+
+    .text-muted {
+        font-size: 0.75rem;
+    }
+</style>
