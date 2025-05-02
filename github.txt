@@ -1,0 +1,104 @@
+git init
+git add .
+git commit -m "first commit"
+git remote add origin https://github.com/MANTECH99/incubateur_innovZig.git
+git push origin HEAD:master
+
+
+
+git remote -v (Django)
+git push -u origin master (Django)
+ 
+
+
+(Django)
+git init
+git add .
+git commit -m "Préparation du projet Django pour Railway"
+git branch -M main
+git remote add origin https://github.com/TON_NOM_UTILISATEUR/TON_PROJET.git
+git push -u origin main
+
+
+
+L'erreur "Updates were rejected because the remote contains work that you do not have locally" signifie que le dépôt distant (GitHub) contient des modifications que tu n'as pas encore récupérées.
+
+📌 Solution :
+Tu dois d'abord synchroniser ton dépôt local avec GitHub avant de pousser (push).
+
+1️⃣ Récupérer les modifications depuis GitHub
+Exécute cette commande pour fusionner les changements distants dans ton dépôt local :
+
+bash
+Copier
+Modifier
+git pull origin main --rebase
+Cela va :
+✅ Télécharger les modifications depuis GitHub
+✅ Les fusionner avec ton code local sans créer un commit inutile
+
+
+
+2️⃣ Pousser ton code vers GitHub
+Après avoir exécuté la commande ci-dessus, essaye de pousser ton code à nouveau :
+
+bash
+Copier
+Modifier
+git push -u origin main
+⚠️ Si l'erreur persiste
+Si des conflits apparaissent après le git pull, utilise cette commande pour forcer l'écrasement de GitHub avec ton code local (⚠️ Cela écrasera les fichiers distants) :
+
+bash
+Copier
+Modifier
+git push --force origin main
+Mais attention, cela supprimera toutes les modifications qui existent sur GitHub et les remplacera par celles de ton PC.
+
+
+
+
+Méthode 2 : Utiliser Railway CLI en local
+Si tu ne trouves pas la console en ligne, utilise le terminal de ton PC avec Railway CLI :
+
+Installe Railway CLI (si ce n'est pas encore fait) :
+
+bash
+Copier
+Modifier
+npm install -g @railway/cli
+
+Connecte-toi à Railway :
+
+bash
+Copier
+Modifier
+railway login
+Navigue vers ton projet :
+
+bash
+Copier
+Modifier
+railway link
+Lance un shell dans ton conteneur Railway :
+
+Railway utilise un environnement basé sur Node.js, donc bash peut ne pas être disponible sur Windows. Essaie plutôt :
+
+sh
+Copier
+Modifier
+railway run cmd
+ou
+
+sh
+Copier
+Modifier
+railway run powershell
+Exécute tes commandes Django dans le shell Railway :
+
+bash
+Copier
+Modifier
+python manage.py migrate
+python manage.py collectstatic --noinput
+
